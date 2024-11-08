@@ -10,44 +10,28 @@ import java.util.ArrayList;
 
 @Service
 public class StockExchangeService {
-    // TODO: create user database
-    // TODO: create stockMarket (also kind of a database)
-    //public StockMarket stockMarket = new StockMarket();
+    public UserDatabase userDatabase;
+    public StockMarket stockMarket;
 
     public StockExchangeService() {
-        // start with some data
-        stocks.put("AAPL", new Stock("AAPL", 150.0));
-        stocks.put("GOOG", new Stock("GOOG", 2800.0));
+        userDatabase = new UserDatabase();
+        stockMarket = new StockMarket(userDatabase);
     }
 
-    public List<Stock> getStocks() {
-        return new ArrayList<>(stocks.values());
+    public StockExchangeService(UserDatabase userDatabase, StockMarket stockMarket) {
+        this.userDatabase = userDatabase;
+        this.stockMarket = stockMarket;
     }
 
-    public double getBalance(String userId) {
-        return 0;
-    }
-
-    public String placeOrder(Order order) {
-        Stock stock = stocks.get(order.getStock());
-        if (stock == null) {
-            return "Stock not found";
+    public void setUpRandomStockExchange() {
+        if (this.userDatabase == null || this.stockMarket == null) {
+            throw new NullPointerException("userDatabase or stockMarket is null");
         }
 
-        double totalCost = stock.getPrice() * order.getQuantity();
-        double userBalance = 0; //TODO:
+        int nOfUsers = 5;
+        int nOfStocks = 20;
 
-        if (order.getIntention() == StockAction.BUY) {
-            if (userBalance >= totalCost) {
-//                balances.put(order.getUser(), userBalance - totalCost);
-                return "Order placed: Bought " + order.getQuantity() + " shares of " + order.getStock();
-            } else {
-                return "Insufficient balance";
-            }
-        } else if (order.getIntention() == StockAction.SELL) {
-//            balances.put(order.getUser(), userBalance + totalCost);
-            return "Order placed: Sold " + order.getQuantity() + " shares of " + order.getStock();
-        }
-        return "Invalid order type";
+        userDatabase.populateRandomUsers(nOfUsers);
+        stockMarket.populateRandomOrders(nOfStocks);
     }
 }

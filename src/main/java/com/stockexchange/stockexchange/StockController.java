@@ -12,22 +12,22 @@ import java.util.List;
 @RequestMapping("/api")
 public class StockController {
 
-    @Autowired
-    private StockExchangeService stockExchangeService;
-
-    @GetMapping("/stocks")
-    public List<Stock> getAllStocks() {
-        return stockExchangeService.getStocks();
-    }
-
-    @GetMapping("/balance/{userId}")
-    public double getUserBalance(@PathVariable String userId) {
-        return stockExchangeService.getBalance(userId);
-    }
-
-    @PostMapping("/orders")
-    public String placeOrder(@RequestBody Order order) {
-        System.out.println("im here");
-        return stockExchangeService.placeOrder(order);
-    }
+//    @Autowired
+//    private StockExchangeService stockExchangeService;
+//
+//    @GetMapping("/stocks")
+//    public List<Stock> getAllStocks() {
+//        return stockExchangeService.getStocks();
+//    }
+//
+//    @GetMapping("/balance/{userId}")
+//    public double getUserBalance(@PathVariable String userId) {
+//        return stockExchangeService.getBalance(userId);
+//    }
+//
+//    @PostMapping("/orders")
+//    public String placeOrder(@RequestBody Order order) {
+//        System.out.println("im here");
+//        return stockExchangeService.placeOrder(order);
+//    }
 }
