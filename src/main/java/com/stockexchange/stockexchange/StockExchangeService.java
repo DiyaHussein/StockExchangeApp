@@ -10,7 +10,9 @@ import java.util.ArrayList;
 
 @Service
 public class StockExchangeService {
-    private ConcurrentHashMap<String, Stock> stocks = new ConcurrentHashMap<>();
+    // TODO: create user database
+    // TODO: create stockMarket (also kind of a database)
+    //public StockMarket stockMarket = new StockMarket();
 
     public StockExchangeService() {
         // start with some data
