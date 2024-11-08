@@ -11,14 +11,11 @@ import java.util.ArrayList;
 @Service
 public class StockExchangeService {
     private ConcurrentHashMap<String, Stock> stocks = new ConcurrentHashMap<>();
-    private ConcurrentHashMap<String, Double> balances = new ConcurrentHashMap<>();
 
     public StockExchangeService() {
         // start with some data
         stocks.put("AAPL", new Stock("AAPL", 150.0));
         stocks.put("GOOG", new Stock("GOOG", 2800.0));
-        balances.put("user1", 1000.0);
-        balances.put("user2", 1500.0);
     }
 
     public List<Stock> getStocks() {
@@ -26,7 +23,7 @@ public class StockExchangeService {
     }
 
     public double getBalance(String userId) {
-        return balances.getOrDefault(userId, 0.0);
+        return 0;
     }
 
     public String placeOrder(Order order) {
@@ -36,17 +33,17 @@ public class StockExchangeService {
         }
 
         double totalCost = stock.getPrice() * order.getQuantity();
-        double userBalance = balances.getOrDefault(order.getUser(), 0.0);
+        double userBalance = 0; //TODO:
 
-        if (order.getType().equalsIgnoreCase("buy")) {
+        if (order.getIntention() == StockAction.BUY) {
             if (userBalance >= totalCost) {
-                balances.put(order.getUser(), userBalance - totalCost);
+//                balances.put(order.getUser(), userBalance - totalCost);
                 return "Order placed: Bought " + order.getQuantity() + " shares of " + order.getStock();
             } else {
                 return "Insufficient balance";
             }
-        } else if (order.getType().equalsIgnoreCase("sell")) {
-            balances.put(order.getUser(), userBalance + totalCost);
+        } else if (order.getIntention() == StockAction.SELL) {
+//            balances.put(order.getUser(), userBalance + totalCost);
             return "Order placed: Sold " + order.getQuantity() + " shares of " + order.getStock();
         }
         return "Invalid order type";

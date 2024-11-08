@@ -1,19 +1,19 @@
 package com.stockexchange.stockexchange;
 
 public class Order {
-    private String user;
+    private User user;
     private String stock;
     private int quantity;
-    private String type;  // basically buy or sell
+    private StockAction intention;  // basically buy or sell
 
-    public Order(String user, String stock, int quantity, String type) {
+    public Order(User user, String stock, int quantity, StockAction intention) {
         this.user = user;
         this.stock = stock;
         this.quantity = quantity;
-        this.type = type;
+        this.intention = intention;
     }
 
-    public String getUser() {
+    public User getUser() {
         return user;
     }
 
@@ -25,7 +25,6 @@ public class Order {
         return quantity;
     }
 
-    public String getType() {
-        return type;
-    }
+    public StockAction getIntention() { return intention; }
+
 }

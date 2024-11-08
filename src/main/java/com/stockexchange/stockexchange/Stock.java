@@ -1,16 +1,16 @@
 package com.stockexchange.stockexchange;
 
 public class Stock {
-    private String symbol;
+    private final String ticker;
     private double price;
 
-    public Stock(String symbol, double price) {
-        this.symbol = symbol;
+    public Stock(String ticker, double price) {
+        this.ticker = ticker;
         this.price = price;
     }
 
-    public String getSymbol() {
-        return symbol;
+    public String getTicker() {
+        return ticker;
     }
 
     public double getPrice() {
