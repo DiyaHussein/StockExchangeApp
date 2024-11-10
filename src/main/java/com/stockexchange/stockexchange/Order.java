@@ -1,6 +1,10 @@
 package com.stockexchange.stockexchange;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 public class Order {
+    private static final AtomicLong idCounter = new AtomicLong(1);
+    private final long id;
     private User user;
     private String stock;
     private int quantity;
@@ -8,6 +12,7 @@ public class Order {
     private StockAction intention;  // basically buy or sell
 
     public Order(User user, String stock, int quantity, double price, StockAction intention) {
+        this.id = idCounter.getAndIncrement();
         this.user = user;
         this.stock = stock;
         this.quantity = quantity;
@@ -29,6 +34,10 @@ public class Order {
 
     public double getPrice() {
         return price;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public StockAction getIntention() { return intention; }

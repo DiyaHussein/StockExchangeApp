@@ -49,4 +49,8 @@ public class User {
     public int getStockQuantity(String ticker) {
         return stocks.getOrDefault(ticker, 0);
     }
+
+    public String getId() {
+        return name;
+    }
 }

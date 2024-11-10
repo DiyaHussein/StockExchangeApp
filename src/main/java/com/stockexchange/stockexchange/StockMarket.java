@@ -1,10 +1,13 @@
 package com.stockexchange.stockexchange;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedQueue;
-//import org.json.JSONObject;
+import org.json.JSONObject;
 
 public class StockMarket {
     private ConcurrentLinkedQueue<Order> buyOrders = new ConcurrentLinkedQueue<>();
@@ -144,28 +147,28 @@ public class StockMarket {
 
     // Method to record a trade in JSON format
     public void recordTrade(Order buyOrder, Order sellOrder, int tradeQuantity) {
-//        // Define the trade details
-//        double tradePrice = (buyOrder.getPrice() + sellOrder.getPrice()) / 2; // Average price
-//        double totalValue = tradeQuantity * tradePrice;
-//
-//        JSONObject tradeRecord = new JSONObject();
-//        tradeRecord.put("timestamp", new Date().toString());
-//        tradeRecord.put("stock", buyOrder.getStock());
-//        tradeRecord.put("quantity", tradeQuantity);
-//        tradeRecord.put("price", tradePrice);
-//        tradeRecord.put("totalValue", totalValue);
-//        tradeRecord.put("buyerId", buyOrder.getUser().getId());
-//        tradeRecord.put("sellerId", sellOrder.getUser().getId());
-//        tradeRecord.put("buyOrderId", buyOrder.getId());
-//        tradeRecord.put("sellOrderId", sellOrder.getId());
-//
-//        // Write trade record to a JSON log file
-//        try (FileWriter file = new FileWriter("trade_log.json", true)) {
-//            file.write(tradeRecord.toString() + "\n");
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        System.out.println("Trade recorded: " + tradeRecord);
+        // Define the trade details
+        double tradePrice = (buyOrder.getPrice() + sellOrder.getPrice()) / 2; // Average price
+        double totalValue = tradeQuantity * tradePrice;
+
+        JSONObject tradeRecord = new JSONObject();
+        tradeRecord.put("timestamp", new Date().toString());
+        tradeRecord.put("stock", buyOrder.getStock());
+        tradeRecord.put("quantity", tradeQuantity);
+        tradeRecord.put("price", tradePrice);
+        tradeRecord.put("totalValue", totalValue);
+        tradeRecord.put("buyerId", buyOrder.getUser().getId());
+        tradeRecord.put("sellerId", sellOrder.getUser().getId());
+        tradeRecord.put("buyOrderId", buyOrder.getId());
+        tradeRecord.put("sellOrderId", sellOrder.getId());
+
+        // Write trade record to a JSON log file
+        try (FileWriter file = new FileWriter("trade_log.json", true)) {
+            file.write(tradeRecord.toString() + "\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Trade recorded: " + tradeRecord);
     }
 }
