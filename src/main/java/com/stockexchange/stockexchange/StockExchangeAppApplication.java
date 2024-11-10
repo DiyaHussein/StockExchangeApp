@@ -3,11 +3,22 @@ package com.stockexchange.stockexchange;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.io.FileWriter;
+import java.io.IOException;
+
 @SpringBootApplication
 public class StockExchangeAppApplication {
 
     public static void main(String[] args) {
         //SpringApplication.run(StockExchangeAppApplication.class, args);
+
+        // Clear the trade_log.json file when the application starts
+        try (FileWriter fileWriter = new FileWriter("trade_log.json", false)) {
+            // Opening in "false" mode clears the file
+            fileWriter.write(""); // Clears the file content
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         int nOfRandomOrders = 10;
         int nOfRandomUsers = 5;

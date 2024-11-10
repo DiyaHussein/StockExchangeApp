@@ -1,2 +1,5 @@
 {"totalValue":3469.8673451212862,"quantity":59,"sellerId":"User3","buyOrderId":3,"price":58.81131093425909,"stock":"MSFT","buyerId":"User2","sellOrderId":1,"timestamp":"Sun Nov 10 22:54:57 EET 2024"}
 {"totalValue":279.51980801689876,"quantity":4,"sellerId":"User3","buyOrderId":3,"price":69.87995200422469,"stock":"MSFT","buyerId":"User2","sellOrderId":4,"timestamp":"Sun Nov 10 22:54:57 EET 2024"}
+{"totalValue":173.74371151232697,"quantity":5,"sellerId":"User4","buyOrderId":2,"price":34.748742302465395,"stock":"AMZN","buyerId":"User4","sellOrderId":5,"timestamp":"Sun Nov 10 23:07:05 EET 2024"}
+{"totalValue":193.08476093890485,"quantity":6,"sellerId":"User3","buyOrderId":6,"price":32.180793489817475,"stock":"TSLA","buyerId":"User1","sellOrderId":10,"timestamp":"Sun Nov 10 23:07:05 EET 2024"}
+{"totalValue":1260.283818636666,"quantity":60,"sellerId":"User5","buyOrderId":8,"price":21.004730310611098,"stock":"NFLX","buyerId":"User4","sellOrderId":3,"timestamp":"Sun Nov 10 23:07:05 EET 2024"}
