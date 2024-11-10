@@ -2,7 +2,10 @@ package com.stockexchange.stockexchange;
 
 public class Stock {
     private final String ticker;
-    private double price;
+    private double price; // might be removed in the future
+    // otherwise we can add another thread that updates the prices that the stock are trading at
+    // every now and then (once per second for example)
+    // make it configurable
 
     public Stock(String ticker, double price) {
         this.ticker = ticker;

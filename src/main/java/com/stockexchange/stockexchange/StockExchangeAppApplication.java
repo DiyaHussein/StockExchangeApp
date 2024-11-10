@@ -7,7 +7,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class StockExchangeAppApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(StockExchangeAppApplication.class, args);
+        //SpringApplication.run(StockExchangeAppApplication.class, args);
+
+        StockExchangeService stockExchangeService = new StockExchangeService();
+        stockExchangeService.setUpRandomStockExchange();
     }
 
 }
