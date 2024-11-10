@@ -23,6 +23,7 @@ public class StockExchangeService {
         this.stockMarket = stockMarket;
     }
 
+    // dummy function used for debug
     public void setUpRandomStockExchange() {
         if (this.userDatabase == null || this.stockMarket == null) {
             throw new NullPointerException("userDatabase or stockMarket is null");
