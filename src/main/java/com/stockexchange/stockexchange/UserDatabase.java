@@ -1,9 +1,11 @@
 package com.stockexchange.stockexchange;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.*;
 
 public class UserDatabase {
     private List<User> users;
@@ -65,5 +67,37 @@ public class UserDatabase {
             // Add the user to the list
             addUser(user);
         }
+    }
+
+    // Method to log all users with balances and holdings to a JSON file
+    public void logUsers() {
+        JSONArray usersArray = new JSONArray();
+
+        for (User user : users) {
+            JSONObject userJson = new JSONObject();
+            userJson.put("name", user.getName());
+            userJson.put("balance", user.getBalance());
+
+            // Collect stock holdings from the Map<String, Integer>
+            JSONArray holdingsArray = new JSONArray();
+            for (Map.Entry<String, Integer> entry : user.getStocks().entrySet()) {
+                JSONObject stockJson = new JSONObject();
+                stockJson.put("ticker", entry.getKey());       // Stock ticker
+                stockJson.put("quantity", entry.getValue());    // Quantity owned
+                holdingsArray.put(stockJson);
+            }
+
+            userJson.put("holdings", holdingsArray);
+            usersArray.put(userJson);
+        }
+
+        // Write JSON array to file
+        try (FileWriter fileWriter = new FileWriter("users_log.json")) {
+            fileWriter.write(usersArray.toString(4)); // Pretty-print with 4 spaces indentation
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Users log created at users_log.json");
     }
 }
