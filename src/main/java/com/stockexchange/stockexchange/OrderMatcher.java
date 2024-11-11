@@ -61,9 +61,17 @@ public class OrderMatcher implements Runnable {
     }
 
     private void executeTrade(Order buyOrder, Order sellOrder, int tradeQuantity) {
-        // Adjust quantities after matching
+        // Adjust quantities of orders after matching
         buyOrder.reduceQuantity(tradeQuantity);
         sellOrder.reduceQuantity(tradeQuantity);
+
+        // Adjust quantities of user balances
+        buyOrder.getUser().setBalance(buyOrder.getUser().getBalance() + tradeQuantity);
+        sellOrder.getUser().setBalance(sellOrder.getUser().getBalance() - tradeQuantity);
+
+        // Adjust quantities of users' stock holdings
+        buyOrder.getUser().addOrUpdateStock(buyOrder.getStock(), tradeQuantity);
+        sellOrder.getUser().addOrUpdateStock(sellOrder.getStock(), tradeQuantity);
 
         // Record trade and update user balances
         stockMarket.recordTrade(buyOrder, sellOrder, tradeQuantity);
