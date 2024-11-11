@@ -20,12 +20,13 @@ public class StockExchangeAppApplication {
             e.printStackTrace();
         }
 
-        int nOfRandomOrders = 10;
-        int nOfRandomUsers = 5;
+        int nOfRandomOrders = 1000;
+        int nOfRandomUsers = 100;
 
         UserDatabase userDatabase = new UserDatabase();
         StockMarket stockMarket = new StockMarket(userDatabase);
 
+        // StockExchangeService class might be useless, will need to redesign/reconsider in the future
         StockExchangeService stockExchangeService = new StockExchangeService(userDatabase, stockMarket);
 
         OrderMatcher orderMatcher = new OrderMatcher(stockMarket);

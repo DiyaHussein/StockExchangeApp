@@ -157,7 +157,7 @@ public class StockMarket {
         tradeRecord.put("quantity", tradeQuantity);
         tradeRecord.put("price", tradePrice);
         tradeRecord.put("totalValue", totalValue);
-        tradeRecord.put("buyerId", buyOrder.getUser().getId());
+        tradeRecord.put("buyerId", buyOrder.getUser().getId()); // TODO: For now, the name substitutes for an ID, add actual ID in the future
         tradeRecord.put("sellerId", sellOrder.getUser().getId());
         tradeRecord.put("buyOrderId", buyOrder.getId());
         tradeRecord.put("sellOrderId", sellOrder.getId());
