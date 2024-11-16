@@ -2,13 +2,13 @@ package com.stockexchange.stockexchange;
 
 import com.stockexchange.stockexchange.Stock;
 import com.stockexchange.stockexchange.Order;
-import org.springframework.stereotype.Service;
+
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.List;
 import java.util.ArrayList;
 
-@Service
+
 public class StockExchangeService {
     public UserDatabase userDatabase;
     public StockMarket stockMarket;

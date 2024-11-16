@@ -1,17 +1,13 @@
 package com.stockexchange.stockexchange;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import static spark.Spark.*;
 
 import java.io.FileWriter;
 import java.io.IOException;
 
-@SpringBootApplication
 public class StockExchangeAppApplication {
 
     public static void main(String[] args) {
-        //SpringApplication.run(StockExchangeAppApplication.class, args);
-
         // Clear the trade_log.json file when the application starts
         try (FileWriter fileWriter = new FileWriter("trade_log.json", false)) {
             // Opening in "false" mode clears the file
@@ -20,30 +16,59 @@ public class StockExchangeAppApplication {
             e.printStackTrace();
         }
 
-        int nOfRandomOrders = 1000;
-        int nOfRandomUsers = 100;
-
+        // Initialize the User Database and Stock Market
         UserDatabase userDatabase = new UserDatabase();
         StockMarket stockMarket = new StockMarket(userDatabase);
 
-        // StockExchangeService class might be useless, will need to redesign/reconsider in the future
-        StockExchangeService stockExchangeService = new StockExchangeService(userDatabase, stockMarket);
-
-        OrderMatcher orderMatcher = new OrderMatcher(stockMarket);
-
-        Thread orderMatcherThread = new Thread(orderMatcher);
-        orderMatcherThread.start();
-
+        // Populate random users and stock orders
+        int nOfRandomUsers = 100;
+        int nOfRandomOrders = 1000;
         userDatabase.populateRandomUsers(nOfRandomUsers);
         stockMarket.populateRandomOrders(nOfRandomOrders);
 
-        // add a shutdown hook to stop the OrderMatcher gracefully
+        // Set up Spark routes
+        port(8080);  // Set the port for the web server
+
+        // Endpoint to get all users (for testing)
+        get("/users", (req, res) -> {
+            return userDatabase.getAllUsers().toString();
+        });
+
+        // Endpoint to add a new user
+        post("/addUser", (req, res) -> {
+            // Assuming you're sending a JSON with 'name' and 'balance'
+            String name = req.queryParams("name");
+            double balance = Double.parseDouble(req.queryParams("balance"));
+            User user = new User(name, balance);
+            userDatabase.addUser(user);
+            return "User added successfully!";
+        });
+
+        // Endpoint to get stock orders (for testing)
+        get("/orders", (req, res) -> {
+            return stockMarket.getAllOrders().toString();
+        });
+
+        // Example route for clearing trade_log.json
+        get("/clearLog", (req, res) -> {
+            try (FileWriter fileWriter = new FileWriter("trade_log.json", false)) {
+                fileWriter.write(""); // Clears the file content
+                return "Trade log cleared!";
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "Error clearing trade log.";
+            }
+        });
+
+        // Thread to handle order matching (if needed in the future)
+        OrderMatcher orderMatcher = new OrderMatcher(stockMarket);
+        Thread orderMatcherThread = new Thread(orderMatcher);
+        orderMatcherThread.start();
+
+        // Add a shutdown hook to stop the OrderMatcher gracefully
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             orderMatcherThread.interrupt();
             System.out.println("OrderMatcher stopped.");
         }));
-
-        //stockExchangeService.setUpRandomStockExchange();
     }
-
 }
