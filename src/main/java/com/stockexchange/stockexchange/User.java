@@ -14,6 +14,12 @@ public class User {
         this.stocks = new HashMap<>(); // Initialize stocks as an empty map
     }
 
+    public User(String name, double balance, Map<String, Integer> stocks) {
+        this.name = name;
+        this.balance = balance;
+        this.stocks = stocks;
+    }
+
     // Getter and setter for balance
     public double getBalance() {
         return balance;
