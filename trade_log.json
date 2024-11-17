@@ -1,2 +1,3 @@
-{"totalValue":388.8891131012482,"quantity":7,"sellerId":"User8","buyOrderId":9,"price":55.5555875858926,"stock":"GOOGL","buyerId":"User9","sellOrderId":8,"timestamp":"Sun Nov 17 00:47:07 EET 2024"}
-Trade: AAPL at $150.5 for 10 units.
+{"totalValue":1861.8347344325075,"quantity":33,"sellerId":"User10","buyOrderId":6,"price":56.41923437674265,"stock":"FB","buyerId":"User8","sellOrderId":2,"timestamp":"Mon Nov 18 00:41:35 EET 2024"}
+{"totalValue":1855.847367773659,"quantity":23,"sellerId":"User5","buyOrderId":6,"price":80.68901599015909,"stock":"FB","buyerId":"User8","sellOrderId":5,"timestamp":"Mon Nov 18 00:41:35 EET 2024"}
+{"totalValue":2756.8174384239924,"quantity":55,"sellerId":"User6","buyOrderId":8,"price":50.12395342589077,"stock":"AMZN","buyerId":"User9","sellOrderId":4,"timestamp":"Mon Nov 18 00:41:35 EET 2024"}

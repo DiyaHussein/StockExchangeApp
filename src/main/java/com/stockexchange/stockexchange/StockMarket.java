@@ -28,7 +28,8 @@ public class StockMarket {
             sellOrders.add(order);
         }
         System.out.println("Order added: " + order.getIntention() + " " + order.getQuantity() +
-                " shares of " + order.getStock() + " by " + order.getUser().getName());
+                " shares of " + order.getStock() + " @"
+                + String.format("%.2f", order.getPrice()) + "USD by " + order.getUser().getName());
     }
 
     // Method to remove an order from the stock market (e.g., if fulfilled or canceled)

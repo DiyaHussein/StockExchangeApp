@@ -42,6 +42,14 @@ public class Order {
 
     public StockAction getIntention() { return intention; }
 
+    @Override
+    public String toString() {
+        return String.format(
+                "%s %d shares of %s @%.2fUSD by %s",
+                intention, quantity, stock, price, user.getName()
+        );
+    }
+
     public void reduceQuantity(int tradeQuantity) {
         if (tradeQuantity < 0) {
             throw new IllegalArgumentException("Trade quantity must be non-negative.");

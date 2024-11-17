@@ -5,6 +5,7 @@ import static spark.Spark.*;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class StockExchangeAppApplication {
 
@@ -63,26 +64,77 @@ public class StockExchangeAppApplication {
             }
         });
 
-        // Endpoint to get stock orders (for testing)
-        get("/orders", (req, res) -> {
-            List<Order> orders = stockMarket.getAllOrders();
-            return orders.isEmpty() ? "No orders found." : orders.toString();
+        // Remove the /logTrade endpoint
+        // Add a new endpoint to add a trade to the StockMarket orders list
+        post("/addTrade", (req, res) -> {
+            String userId = req.queryParams("userId");
+            String stockSymbol = req.queryParams("stock");
+            String quantityStr = req.queryParams("quantity");
+            String priceStr = req.queryParams("price");
+            String actionStr = req.queryParams("action");
+
+            if (userId == null || stockSymbol == null || quantityStr == null || priceStr == null || actionStr == null) {
+                res.status(400);
+                return "Missing required parameters. Required: userId, stock, quantity, price, action.";
+            }
+
+            try {
+                int quantity = Integer.parseInt(quantityStr);
+                double price = Double.parseDouble(priceStr);
+                StockAction action = StockAction.valueOf(actionStr.toUpperCase());
+
+                if (quantity <= 0 || price <= 0) {
+                    res.status(400);
+                    return "Quantity and price must be positive numbers.";
+                }
+
+                User user = userDatabase.getUser(userId).orElse(null);
+                if (user == null) {
+                    res.status(404);
+                    return "User not found.";
+                }
+
+                // Create a new order
+                Order order = new Order(user, stockSymbol, quantity, price, action);
+
+                // Add the order to the appropriate list in StockMarket
+                stockMarket.addOrder(order);
+
+                return "Order added successfully: " + order;
+            } catch (NumberFormatException e) {
+                res.status(400);
+                return "Invalid quantity or price format.";
+            } catch (IllegalArgumentException e) {
+                res.status(400);
+                return "Invalid action. Must be BUY or SELL.";
+            }
         });
 
-        // Endpoint to log a trade into the trade_log.json file
-        post("/logTrade", (req, res) -> {
-            String stockSymbol = req.queryParams("symbol");
-            double price = Double.parseDouble(req.queryParams("price"));
-            int quantity = Integer.parseInt(req.queryParams("quantity"));
-            String tradeDetails = "Trade: " + stockSymbol + " at $" + price + " for " + quantity + " units.";
+        // Add an endpoint to list all live orders
+        get("/orders/live", (req, res) -> {
+            String type = req.queryParams("type");
 
-            try (FileWriter fileWriter = new FileWriter("trade_log.json", true)) {
-                fileWriter.append(tradeDetails + "\n");
-                return "Trade logged: " + tradeDetails;
-            } catch (IOException e) {
-                e.printStackTrace();
-                res.status(500);
-                return "Error logging trade.";
+            if (type == null) {
+                // If no type is specified, return all orders
+                List<Order> allOrders = stockMarket.getAllOrders();
+                if (allOrders.isEmpty()) {
+                    return "No live orders found.";
+                }
+                return String.join("\n", allOrders.stream().map(Order::toString).collect(Collectors.toList()));
+            }
+
+            // If a type is specified, filter the orders by type
+            try {
+                StockAction action = StockAction.valueOf(type.toUpperCase());
+                List<Order> filteredOrders = stockMarket.getOrdersByIntention(action);
+
+                if (filteredOrders.isEmpty()) {
+                    return "No live " + action + " orders found.";
+                }
+                return String.join("\n", filteredOrders.stream().map(Order::toString).collect(Collectors.toList()));
+            } catch (IllegalArgumentException e) {
+                res.status(400);
+                return "Invalid type. Must be 'BUY' or 'SELL'.";
             }
         });
 
