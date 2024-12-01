@@ -21,7 +21,7 @@ public class OrderMatcher implements Runnable {
             try {
                 matchOrders();
                 // Sleep to reduce CPU usage and allow graceful thread interruption
-                Thread.sleep(1);  // Sleep for 100 milliseconds, adjust if needed
+                Thread.sleep(50);  // Sleep for 100 milliseconds, adjust if needed
             } catch (InterruptedException e) {
                 // Thread interrupted, exit gracefully
                 Thread.currentThread().interrupt();  // Preserve interrupt status
