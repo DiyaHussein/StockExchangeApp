@@ -1,16 +1,23 @@
 package upt.cebp;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class User {
     private String name;
     private double balance;
-    private Map<String, Integer> stocks; // New variable to store stocks and their quantities
+    private Map<String, Integer> stocks;
 
+    // No-argument constructor for Jackson
+    public User() {
+        this.stocks = new HashMap<>();
+    }
+
+    // Existing constructor with parameters
     public User(String name, double balance) {
         this.name = name;
         this.balance = balance;
-        this.stocks = new HashMap<>(); // Initialize stocks as an empty map
+        this.stocks = new HashMap<>();
     }
 
     public User(String name, double balance, Map<String, Integer> stocks) {
@@ -59,4 +66,3 @@ public class User {
         return name;
     }
 }
-

@@ -14,7 +14,6 @@ public class UserController {
 
     @Autowired
     private UserDatabase userDatabase;
-
     // Add a new user
     @PostMapping("/add")
     public String addUser(@RequestBody User user) {
