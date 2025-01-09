@@ -3,13 +3,22 @@ package com.stockexchange.stockexchange;
 import com.stockexchange.stockexchange.Order;
 import com.stockexchange.stockexchange.StockMarket;
 
+import java.net.URI;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.net.http.HttpClient;
+
 import java.util.Iterator;
 import java.util.concurrent.locks.ReentrantLock;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class OrderMatcher implements Runnable {
     private final StockMarket stockMarket;
     private final ReentrantLock lock = new ReentrantLock();
     private volatile boolean running = true; // Control flag for thread termination
+    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final HttpClient httpClient = HttpClient.newHttpClient();
 
     public OrderMatcher(StockMarket stockMarket) {
         this.stockMarket = stockMarket;
@@ -76,18 +85,54 @@ public class OrderMatcher implements Runnable {
         buyOrder.reduceQuantity(tradeQuantity);
         sellOrder.reduceQuantity(tradeQuantity);
 
-        // Adjust quantities of user balances
-        buyOrder.getUser().setBalance(buyOrder.getUser().getBalance() + tradeQuantity);
-        sellOrder.getUser().setBalance(sellOrder.getUser().getBalance() - tradeQuantity);
+        // Update user balances locally
+        double totalTradeCost = tradeQuantity * sellOrder.getPrice();
+        buyOrder.getUser().setBalance(buyOrder.getUser().getBalance() - totalTradeCost);
+        sellOrder.getUser().setBalance(sellOrder.getUser().getBalance() + totalTradeCost);
 
-        // Adjust quantities of users' stock holdings
+        // Adjust stock holdings locally
         buyOrder.getUser().addOrUpdateStock(buyOrder.getStock(), tradeQuantity);
-        sellOrder.getUser().addOrUpdateStock(sellOrder.getStock(), tradeQuantity);
+        sellOrder.getUser().addOrUpdateStock(sellOrder.getStock(), -tradeQuantity);
 
-        // Record trade and update user balances
+        // Synchronize balances with the Spring app
+        syncUserBalanceWithSpringApp(buyOrder.getUser());
+        syncUserBalanceWithSpringApp(sellOrder.getUser());
+
+        // Log the trade details to the terminal
+        System.out.printf(
+                "Trade Executed: Stock=%s, Quantity=%d, BuyPrice=%.2f, SellPrice=%.2f, Buyer=%s, Seller=%s%n",
+                buyOrder.getStock(),
+                tradeQuantity,
+                buyOrder.getPrice(),
+                sellOrder.getPrice(),
+                buyOrder.getUser().getName(),
+                sellOrder.getUser().getName()
+        );
+
+        // Record the trade in the system
         stockMarket.recordTrade(buyOrder, sellOrder, tradeQuantity);
     }
 
+    private void syncUserBalanceWithSpringApp(User user) {
+        try {
+            String apiUrl = "http://localhost:8080/api/users/" + user.getId(); // Spring app's endpoint
+            String updatedUserJson = objectMapper.writeValueAsString(user);
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(apiUrl))
+                    .header("Content-Type", "application/json")
+                    .PUT(HttpRequest.BodyPublishers.ofString(updatedUserJson))
+                    .build();
+
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() != 200) {
+                System.err.printf("Failed to update user %s on Spring app. Status: %d%n", user.getName(), response.statusCode());
+            }
+        } catch (Exception e) {
+            System.err.printf("Error updating user %s: %s%n", user.getName(), e.getMessage());
+        }
+    }
     // Method to stop the matcher thread if needed
     public void stop() {
         running = false;

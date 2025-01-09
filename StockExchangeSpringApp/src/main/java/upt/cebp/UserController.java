@@ -1,6 +1,7 @@
 package upt.cebp;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -51,6 +52,38 @@ public class UserController {
         user.setStocks(updatedUser.getStocks());
         saveDatabase();
         return user;
+    }
+
+    @PatchMapping("/{id}/balance")
+    public ResponseEntity<User> updateUserBalance(@PathVariable Long id, @RequestBody double newBalance) {
+        Optional<User> userOptional = userDatabase.getUserById(id);
+        if (userOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        User user = userOptional.get();
+        user.setBalance(newBalance);
+
+        // Save changes to the database
+        saveDatabase();
+
+        return ResponseEntity.ok(user);
+    }
+
+    @PatchMapping("/{id}/stocks")
+    public ResponseEntity<User> updateUserStocks(@PathVariable Long id, @RequestBody Map<String, Integer> updatedStocks) {
+        Optional<User> userOptional = userDatabase.getUserById(id);
+        if (userOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        User user = userOptional.get();
+        user.setStocks(updatedStocks);
+
+        // Save changes to the database
+        saveDatabase();
+
+        return ResponseEntity.ok(user);
     }
 
     @DeleteMapping("/{id}")

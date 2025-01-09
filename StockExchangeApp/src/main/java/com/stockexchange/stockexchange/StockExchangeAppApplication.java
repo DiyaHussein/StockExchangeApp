@@ -30,6 +30,9 @@ public class StockExchangeAppApplication {
         UserDatabase userDatabase = new UserDatabase();
         StockMarket stockMarket = new StockMarket(userDatabase);
 
+        // Synchronize users with the Spring app at startup
+        syncUsersFromSpringApp(userDatabase);
+
         // Populate random users and stock orders
         int nOfRandomUsers = 10;
         int nOfRandomOrders = 10;
@@ -193,6 +196,18 @@ public class StockExchangeAppApplication {
         } catch (IOException e) {
             System.err.println("Error saving trade log: " + e.getMessage());
             e.printStackTrace();
+        }
+    }
+
+    private static void syncUsersFromSpringApp(UserDatabase userDatabase) {
+        try {
+            List<User> usersFromSpring = userDatabase.getAllUsers(); // Fetch from Spring app
+            for (User user : usersFromSpring) {
+                userDatabase.addUser(user); // Populate local user database
+            }
+            System.out.println("Users synchronized from Spring app.");
+        } catch (Exception e) {
+            System.err.println("Failed to synchronize users: " + e.getMessage());
         }
     }
 }
