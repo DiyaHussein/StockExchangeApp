@@ -3,64 +3,114 @@ package upt.cebp;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Main extends Application {
 
     private Stage primaryStage;
-    private Scene loginScene, stockScene;
+    private Scene loginScene, registrationScene, stockScene;
+
+    // In-memory database to store usernames and passwords
+    private Map<String, String> userDatabase = new HashMap<>();
 
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
 
-        // Create the login screen
+        // Create login screen and registration screen
         createLoginScreen();
+        createRegistrationScreen();
 
-        // Set the scene to the login screen
-        primaryStage.setTitle("Stock Exchange - Login");
+        // Set the initial scene to login
+        primaryStage.setTitle("Stock Exchange");
         primaryStage.setScene(loginScene);
         primaryStage.show();
     }
 
     private void createLoginScreen() {
-        // Create username and password fields
+        // Username and password fields
         Label usernameLabel = new Label("Username:");
         TextField usernameField = new TextField();
 
         Label passwordLabel = new Label("Password:");
         PasswordField passwordField = new PasswordField();
 
-        // Create login button
+        // Login button
         Button loginButton = new Button("Login");
         loginButton.setOnAction(e -> {
-            // Simple login validation (username = "user" and password = "password")
-            if (usernameField.getText().equals("user") && passwordField.getText().equals("password")) {
-                // Successfully logged in, switch to stock exchange UI
+            String username = usernameField.getText();
+            String password = passwordField.getText();
+
+            // Check credentials in the user database
+            if (userDatabase.containsKey(username) && userDatabase.get(username).equals(password)) {
+                // Successful login, switch to stock exchange scene
                 createStockScene();
                 primaryStage.setScene(stockScene);
             } else {
-                // Show error message if login fails
-                Label errorLabel = new Label("Invalid username or password!");
-                VBox errorBox = new VBox(10, errorLabel);
-                errorBox.setAlignment(Pos.CENTER);
-                Scene errorScene = new Scene(errorBox, 300, 200);
-                primaryStage.setScene(errorScene);
+                // Show error message
+                showError("Invalid username or password!");
             }
         });
 
-        // Create a layout for the login page
+        // Register button
+        Button registerButton = new Button("Register");
+        registerButton.setOnAction(e -> {
+            // Switch to registration scene
+            primaryStage.setScene(registrationScene);
+        });
+
+        // Layout for login screen
         VBox loginLayout = new VBox(10);
         loginLayout.setAlignment(Pos.CENTER);
-        loginLayout.getChildren().addAll(usernameLabel, usernameField, passwordLabel, passwordField, loginButton);
+        loginLayout.getChildren().addAll(usernameLabel, usernameField, passwordLabel, passwordField, loginButton, registerButton);
 
-        // Create the login scene
-        loginScene = new Scene(loginLayout, 300, 200);
+        loginScene = new Scene(loginLayout, 300, 250);
+    }
+
+    private void createRegistrationScreen() {
+        // Username and password fields
+        Label usernameLabel = new Label("Username:");
+        TextField usernameField = new TextField();
+
+        Label passwordLabel = new Label("Password:");
+        PasswordField passwordField = new PasswordField();
+
+        // Register button
+        Button registerButton = new Button("Register");
+        registerButton.setOnAction(e -> {
+            String username = usernameField.getText();
+            String password = passwordField.getText();
+
+            if (username.isEmpty() || password.isEmpty()) {
+                showError("Username or password cannot be empty!");
+                return;
+            }
+
+            if (userDatabase.containsKey(username)) {
+                showError("Username already exists!");
+            } else {
+                // Save the user in the database
+                userDatabase.put(username, password);
+                showInfo("Registration successful! Please log in.");
+                primaryStage.setScene(loginScene);
+            }
+        });
+
+        // Back to Login button
+        Button backButton = new Button("Back to Login");
+        backButton.setOnAction(e -> primaryStage.setScene(loginScene));
+
+        // Layout for registration screen
+        VBox registrationLayout = new VBox(10);
+        registrationLayout.setAlignment(Pos.CENTER);
+        registrationLayout.getChildren().addAll(usernameLabel, usernameField, passwordLabel, passwordField, registerButton, backButton);
+
+        registrationScene = new Scene(registrationLayout, 300, 250);
     }
 
     private void createStockScene() {
@@ -68,13 +118,12 @@ public class Main extends Application {
         String[] stockNames = {"Apple", "Tesla", "Amazon", "Google"};
         double[] stockPrices = {150.25, 700.45, 3200.75, 2800.60};
 
-        // Create labels and buttons for each stock
         VBox vbox = new VBox(10);
         vbox.setAlignment(Pos.CENTER);
 
         for (int i = 0; i < stockNames.length; i++) {
-            final String stockName = stockNames[i];  // Capture stock name
-            final double stockPrice = stockPrices[i];  // Capture stock price
+            final String stockName = stockNames[i];
+            final double stockPrice = stockPrices[i];
 
             Label stockLabel = new Label(stockName + " - $" + stockPrice);
             Button buyButton = new Button("Buy");
@@ -82,19 +131,28 @@ public class Main extends Application {
 
             buyButton.setOnAction(e -> {
                 System.out.println("Buying " + stockName);
-                // Add your buy functionality here
             });
 
             sellButton.setOnAction(e -> {
                 System.out.println("Selling " + stockName);
-                // Add your sell functionality here
             });
 
             vbox.getChildren().addAll(stockLabel, buyButton, sellButton);
         }
 
-        // Create a scene with the stock info
         stockScene = new Scene(vbox, 400, 400);
+    }
+
+    private void showError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private void showInfo(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     public static void main(String[] args) {
