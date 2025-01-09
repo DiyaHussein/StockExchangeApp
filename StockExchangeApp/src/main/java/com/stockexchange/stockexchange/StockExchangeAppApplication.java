@@ -2,12 +2,21 @@ package com.stockexchange.stockexchange;
 
 import static spark.Spark.*;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+
 public class StockExchangeAppApplication {
+
+    private static final String LOG_DIRECTORY = "logs";
 
     public static void main(String[] args) {
         // Clear the trade_log.json file when the application starts
@@ -24,8 +33,11 @@ public class StockExchangeAppApplication {
         // Populate random users and stock orders
         int nOfRandomUsers = 10;
         int nOfRandomOrders = 10;
-        userDatabase.populateRandomUsers(nOfRandomUsers);
+        //userDatabase.populateRandomUsers(nOfRandomUsers);
         stockMarket.populateRandomOrders(nOfRandomOrders);
+
+        // Add a shutdown hook to save the trade log with a timestamp
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> saveTradeLog()));
 
         // Set up Spark routes
         port(9090);  // Set the port for the web server
@@ -158,5 +170,29 @@ public class StockExchangeAppApplication {
 
         // Keep the application running indefinitely
         awaitInitialization();  // Keeps the Spark server running until a shutdown signal
+
+        System.out.println("Server is running. Press CTRL+C to stop.");
+    }
+
+    private static void saveTradeLog() {
+        try {
+            // Create logs directory if it doesn't exist
+            File logDir = new File(LOG_DIRECTORY);
+            if (!logDir.exists()) {
+                logDir.mkdir();
+            }
+
+            // Generate a timestamped filename
+            String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            String targetFileName = LOG_DIRECTORY + File.separator + "trade_log_" + timestamp + ".json";
+
+            // Move the current trade_log.json file to the new file
+            Files.move(Paths.get("trade_log.json"), Paths.get(targetFileName));
+
+            System.out.println("Trade log saved to: " + targetFileName);
+        } catch (IOException e) {
+            System.err.println("Error saving trade log: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

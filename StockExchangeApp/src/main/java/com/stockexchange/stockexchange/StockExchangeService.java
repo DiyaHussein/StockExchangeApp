@@ -24,15 +24,15 @@ public class StockExchangeService {
     }
 
     // dummy function used for debug
-    public void setUpRandomStockExchange() {
-        if (this.userDatabase == null || this.stockMarket == null) {
-            throw new NullPointerException("userDatabase or stockMarket is null");
-        }
-
-        int nOfUsers = 5;
-        int nOfStocks = 20;
-
-        userDatabase.populateRandomUsers(nOfUsers);
-        stockMarket.populateRandomOrders(nOfStocks);
-    }
+//    public void setUpRandomStockExchange() {
+//        if (this.userDatabase == null || this.stockMarket == null) {
+//            throw new NullPointerException("userDatabase or stockMarket is null");
+//        }
+//
+//        int nOfUsers = 5;
+//        int nOfStocks = 20;
+//
+//        userDatabase.populateRandomUsers(nOfUsers);
+//        stockMarket.populateRandomOrders(nOfStocks);
+//    }
 }

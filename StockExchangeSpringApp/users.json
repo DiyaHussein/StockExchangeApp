@@ -5,4 +5,46 @@
   "stocks" : {
     "MSFT" : 19
   }
+}, {
+  "id" : 3,
+  "name" : "First Guy",
+  "balance" : 111000.0,
+  "stocks" : {
+    "TSLA" : 22,
+    "GOOGL" : 1
+  }
+}, {
+  "id" : 4,
+  "name" : "Quattro",
+  "balance" : 400000.0,
+  "stocks" : {
+    "FB" : 220,
+    "GOOGL" : 19
+  }
+}, {
+  "id" : 5,
+  "name" : "Henry V",
+  "balance" : 23.0,
+  "stocks" : {
+    "FB" : 1,
+    "GOOGL" : 1
+  }
+}, {
+  "id" : 6,
+  "name" : "Pablo Escobar",
+  "balance" : 3.0E10,
+  "stocks" : {
+    "FB" : 1,
+    "GOOGL" : 1,
+    "AMZN" : 2025
+  }
+}, {
+  "id" : 7,
+  "name" : "Andrew Jackson",
+  "balance" : 109345.0,
+  "stocks" : {
+    "NFLX" : 33,
+    "GOOGL" : 50,
+    "AMZN" : 40
+  }
 } ]

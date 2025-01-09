@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="fd2e3585-492f-4ef3-a7df-d1784c9b876d" name="Changes" comment="add function to log user database into JSON file" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Enum" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="2oXNVRZ0HqjXKQLzSSYzVpwTSE7" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "JUnit.OrderMatcherConcurrencyTest.testMatchOrdersConcurrency.executor": "Run",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "Spring Boot.StockExchangeAppApplication.executor": "Run",
+    "git-widget-placeholder": "dev__milestone1__extended",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/work/UPT/CEBP/StockExchangeApp/StockExchangeApp",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "com.maddyhome.idea.vim.ui.VimEmulationConfigurable",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\work\UPT\CEBP\StockExchangeApp" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Spring Boot.StockExchangeAppApplication">
+    <configuration name="OrderMatcherConcurrencyTest.testMatchOrdersConcurrency" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="stock-exchange" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.stockexchange.stockexchange.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.stockexchange.stockexchange" />
+      <option name="MAIN_CLASS_NAME" value="com.stockexchange.stockexchange.OrderMatcherConcurrencyTest" />
+      <option name="METHOD_NAME" value="testMatchOrdersConcurrency" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="StockExchangeAppApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="stock-exchange" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.stockexchange.stockexchange.StockExchangeAppApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.OrderMatcherConcurrencyTest.testMatchOrdersConcurrency" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23726.103" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23726.103" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="fd2e3585-492f-4ef3-a7df-d1784c9b876d" name="Changes" comment="" />
+      <created>1731011984385</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1731011984385</updated>
+      <workItem from="1731011985229" duration="2145000" />
+      <workItem from="1731086951382" duration="6132000" />
+      <workItem from="1731094639605" duration="8261000" />
+      <workItem from="1731263795657" duration="2473000" />
+      <workItem from="1731266295166" duration="10191000" />
+      <workItem from="1731333798706" duration="820000" />
+      <workItem from="1731766950128" duration="710000" />
+      <workItem from="1731790503167" duration="3954000" />
+      <workItem from="1731857782712" duration="10034000" />
+      <workItem from="1732450380080" duration="3905000" />
+    </task>
+    <task id="LOCAL-00001" summary="added .json files to .gitignore">
+      <option name="closed" value="true" />
+      <created>1731273356900</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1731273356900</updated>
+    </task>
+    <task id="LOCAL-00002" summary="changed simulation to 1000 orders, 100 users">
+      <option name="closed" value="true" />
+      <created>1731284683506</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1731284683506</updated>
+    </task>
+    <task id="LOCAL-00003" summary="fix executeTrade function">
+      <option name="closed" value="true" />
+      <created>1731284721267</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1731284721267</updated>
+    </task>
+    <task id="LOCAL-00004" summary="add function to log user database into JSON file">
+      <option name="closed" value="true" />
+      <created>1731285364399</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1731285364399</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="added .json files to .gitignore" />
+    <MESSAGE value="changed simulation to 1000 orders, 100 users" />
+    <MESSAGE value="fix executeTrade function" />
+    <MESSAGE value="add function to log user database into JSON file" />
+    <option name="LAST_COMMIT_MESSAGE" value="add function to log user database into JSON file" />
+  </component>
+</project>

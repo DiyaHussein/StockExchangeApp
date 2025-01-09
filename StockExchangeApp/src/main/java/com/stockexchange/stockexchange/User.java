@@ -4,9 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class User {
+    private Long id;
     private String name;
     private double balance;
     private Map<String, Integer> stocks; // New variable to store stocks and their quantities
+
+    public User() {}
 
     public User(String name, double balance) {
         this.name = name;

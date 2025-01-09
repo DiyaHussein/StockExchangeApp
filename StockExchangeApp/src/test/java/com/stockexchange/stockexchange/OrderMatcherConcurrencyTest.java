@@ -20,7 +20,7 @@ public class OrderMatcherConcurrencyTest {
         OrderMatcher orderMatcher = new OrderMatcher(stockMarket);
 
         // Populate the user database
-        userDatabase.populateRandomUsers(10);
+        //userDatabase.populateRandomUsers(10);
 
         // Start the OrderMatcher in a separate thread
         Thread matcherThread = new Thread(orderMatcher);
