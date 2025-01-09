@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class UserDatabase {
 
@@ -13,11 +14,18 @@ public class UserDatabase {
     private long nextId = 1;
     private static final String FILE_PATH = "users.json";
 
+    private static final AtomicLong idCounter = new AtomicLong(1); // Import java.util.concurrent.atomic.AtomicLong
+
     public User addUser(User user) {
         if (user.getId() == null) {
-            user.setId(nextId++);
+            user.setId(idCounter.getAndIncrement());
         }
         users.add(user);
+        try {
+            saveToJson(); // Save changes to JSON
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         return user;
     }
 
@@ -45,7 +53,32 @@ public class UserDatabase {
             List<User> loadedUsers = mapper.readValue(file, new TypeReference<List<User>>() {});
             users.clear();
             users.addAll(loadedUsers);
-            nextId = users.stream().mapToLong(User::getId).max().orElse(0) + 1;
+
+            // Update the idCounter to ensure IDs are unique
+            long maxId = users.stream().mapToLong(User::getId).max().orElse(0);
+            idCounter.set(maxId + 1); // Set idCounter to one greater than the current max ID
         }
+    }
+
+    public void updateUserBalance(Long id, double newBalance) {
+        getUserById(id).ifPresent(user -> {
+            user.setBalance(newBalance);
+            try {
+                saveToJson(); // Persist changes
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
+    public void updateUserStocks(Long id, Map<String, Integer> newStocks) {
+        getUserById(id).ifPresent(user -> {
+            user.setStocks(newStocks);
+            try {
+                saveToJson(); // Persist changes
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 }

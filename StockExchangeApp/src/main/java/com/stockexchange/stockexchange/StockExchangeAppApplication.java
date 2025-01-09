@@ -55,29 +55,29 @@ public class StockExchangeAppApplication {
         });
 
         // Endpoint to add a new user
-        post("/addUser", (req, res) -> {
-            String name = req.queryParams("name");
-            String balanceStr = req.queryParams("balance");
-            if (name == null || balanceStr == null) {
-                res.status(400);
-                return "Name and balance are required.";
-            }
-
-            try {
-                double balance = Double.parseDouble(balanceStr);
-                if (balance < 0) {
-                    res.status(400);
-                    return "Balance must be a positive number.";
-                }
-
-                User user = new User(name, balance);
-                userDatabase.addUser(user);
-                return "User added successfully!";
-            } catch (NumberFormatException e) {
-                res.status(400);
-                return "Invalid balance format.";
-            }
-        });
+//        post("/addUser", (req, res) -> {
+//            String name = req.queryParams("name");
+//            String balanceStr = req.queryParams("balance");
+//            if (name == null || balanceStr == null) {
+//                res.status(400);
+//                return "Name and balance are required.";
+//            }
+//
+//            try {
+//                double balance = Double.parseDouble(balanceStr);
+//                if (balance < 0) {
+//                    res.status(400);
+//                    return "Balance must be a positive number.";
+//                }
+//
+//                User user = new User(name, balance);
+//                userDatabase.addUser(user);
+//                return "User added successfully!";
+//            } catch (NumberFormatException e) {
+//                res.status(400);
+//                return "Invalid balance format.";
+//            }
+//        });
 
         // Remove the /logTrade endpoint
         // Add a new endpoint to add a trade to the StockMarket orders list

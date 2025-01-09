@@ -113,24 +113,45 @@ public class OrderMatcher implements Runnable {
         stockMarket.recordTrade(buyOrder, sellOrder, tradeQuantity);
     }
 
+//    private void syncUserBalanceWithSpringApp(User user) {
+//        try {
+//            String apiUrl = "http://localhost:8080/api/users/" + user.getId(); // Spring app's endpoint
+//            String updatedUserJson = objectMapper.writeValueAsString(user);
+//
+//            HttpRequest request = HttpRequest.newBuilder()
+//                    .uri(URI.create(apiUrl))
+//                    .header("Content-Type", "application/json")
+//                    .PUT(HttpRequest.BodyPublishers.ofString(updatedUserJson))
+//                    .build();
+//
+//            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+//
+//            if (response.statusCode() != 200) {
+//                System.err.printf("Failed to update user %s on Spring app. Status: %d%n", user.getName(), response.statusCode());
+//            }
+//        } catch (Exception e) {
+//            System.err.printf("Error updating user %s: %s%n", user.getName(), e.getMessage());
+//        }
+//    }
+
     private void syncUserBalanceWithSpringApp(User user) {
         try {
-            String apiUrl = "http://localhost:8080/api/users/" + user.getId(); // Spring app's endpoint
-            String updatedUserJson = objectMapper.writeValueAsString(user);
+            String apiUrl = "http://localhost:8080/api/users/" + user.getId() + "/balance"; // Use numeric ID
+            String balanceJson = objectMapper.writeValueAsString(user.getBalance()); // Send only balance
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(apiUrl))
                     .header("Content-Type", "application/json")
-                    .PUT(HttpRequest.BodyPublishers.ofString(updatedUserJson))
+                    .method("PATCH", HttpRequest.BodyPublishers.ofString(balanceJson))
                     .build();
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() != 200) {
-                System.err.printf("Failed to update user %s on Spring app. Status: %d%n", user.getName(), response.statusCode());
+                System.err.printf("Failed to update balance for user ID %d. Status: %d%n", user.getId(), response.statusCode());
             }
         } catch (Exception e) {
-            System.err.printf("Error updating user %s: %s%n", user.getName(), e.getMessage());
+            System.err.printf("Error updating balance for user ID %d: %s%n", user.getId(), e.getMessage());
         }
     }
     // Method to stop the matcher thread if needed
