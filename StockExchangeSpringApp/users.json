@@ -1,0 +1,8 @@
+[ {
+  "id" : 2,
+  "name" : "MR Second",
+  "balance" : 2200.0,
+  "stocks" : {
+    "MSFT" : 19
+  }
+} ]

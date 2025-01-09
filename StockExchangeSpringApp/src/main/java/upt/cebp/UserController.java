@@ -1,44 +1,71 @@
 package upt.cebp;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserDatabase userDatabase = new UserDatabase();
+
+    public UserController() {
+        // Load existing data from JSON on startup
+        try {
+            userDatabase.loadFromJson();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @GetMapping
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        return userDatabase.getAllUsers();
     }
 
     @GetMapping("/{id}")
     public User getUserById(@PathVariable Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        return userDatabase.getUserById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     @PostMapping
     public User createUser(@RequestBody User user) {
-        return userRepository.save(user);
+        User createdUser = userDatabase.addUser(user);
+        saveDatabase();
+        return createdUser;
     }
 
     @PutMapping("/{id}")
     public User updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
-        return userRepository.findById(id).map(user -> {
-            user.setName(updatedUser.getName());
-            user.setBalance(updatedUser.getBalance());
-            user.setStocks(updatedUser.getStocks());
-            return userRepository.save(user);
-        }).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userDatabase.getUserById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        user.setName(updatedUser.getName());
+        user.setBalance(updatedUser.getBalance());
+        user.setStocks(updatedUser.getStocks());
+        saveDatabase();
+        return user;
     }
 
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable Long id) {
-        userRepository.deleteById(id);
+        if (!userDatabase.removeUser(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        }
+    }
+
+    private void saveDatabase() {
+        try {
+            userDatabase.saveToJson();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to save user data");
+        }
     }
 }
