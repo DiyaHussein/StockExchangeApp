@@ -8,6 +8,7 @@ public class User {
     private String name;
     private double balance;
     private Map<String, Integer> stocks; // New variable to store stocks and their quantities
+    public String password;
 
     public User() {}
 
@@ -64,4 +65,12 @@ public class User {
     }
 
     public void setId(Long id) {this.id = id;}
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

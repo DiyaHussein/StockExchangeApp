@@ -9,7 +9,7 @@ public class User {
     private String name;
     private double balance;
     private Map<String, Integer> stocks;
-    private String password;
+    public String password;
 
     public User() {} // Default constructor is required for JSON deserialization
 
@@ -69,7 +69,7 @@ public class User {
         return stocks.getOrDefault(ticker, 0);
     }
 
-    private String getPassword(){
+    public String getPassword(){
         return password;
     }
 
