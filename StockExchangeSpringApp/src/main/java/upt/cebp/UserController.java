@@ -101,4 +101,16 @@ public class UserController {
             throw new RuntimeException("Failed to save user data");
         }
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<User> loginUser(@RequestBody Map<String, String> credentials) {
+        String username = credentials.get("username");
+        String password = credentials.get("password");
+
+        return userDatabase.getAllUsers().stream()
+                .filter(user -> user.getName().equals(username) && user.getPassword().equals(password))
+                .findFirst()
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null));
+    }
 }
