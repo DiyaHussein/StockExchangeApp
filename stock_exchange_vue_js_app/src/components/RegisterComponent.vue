@@ -13,6 +13,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
@@ -23,8 +25,20 @@ export default {
     };
   },
   methods: {
-    register() {
-      // Logic for registration (e.g., axios request to backend)
+    async register() {
+      try {
+        const response = await axios.post("http://localhost:8080/api/users", {
+          name: this.username,
+          balance: this.balance,
+          password: this.password,
+        });
+        alert("Registration successful! Please log in.");
+        console.log(response.data); // Handle successful registration response
+        this.$emit("login"); // Switch back to login view
+      } catch (error) {
+        alert("Registration failed. Please try again.");
+        console.error(error);
+      }
     },
   },
 };

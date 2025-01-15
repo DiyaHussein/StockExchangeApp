@@ -1,27 +1,44 @@
 <template>
-  <div id="app">
-    <LoginComponent v-if="showLogin" @register="toggleView" />
-    <RegisterComponent v-else @login="toggleView" />
+  <div>
+    <h1>Register</h1>
+    <form @submit.prevent="register">
+      <input v-model="username" placeholder="Username/Email" />
+      <input v-model="fullName" placeholder="Full Name" />
+      <input v-model="balance" placeholder="Balance" type="number" />
+      <input v-model="password" placeholder="Password" type="password" />
+      <button type="submit">Register</button>
+    </form>
+    <button @click="$emit('login')">Back to Login</button>
   </div>
 </template>
 
 <script>
-import LoginComponent from './components/LoginComponent.vue';
-import RegisterComponent from './components/RegisterComponent.vue';
+import axios from "axios";
 
 export default {
-  components: {
-    LoginComponent,
-    RegisterComponent,
-  },
   data() {
     return {
-      showLogin: true,
+      username: "",
+      fullName: "",
+      balance: 0,
+      password: "",
     };
   },
   methods: {
-    toggleView() {
-      this.showLogin = !this.showLogin;
+    async register() {
+      try {
+        const response = await axios.post("http://localhost:8080/api/users", {
+          name: this.username,
+          balance: this.balance,
+          password: this.password,
+        });
+        alert("Registration successful! Please log in.");
+        console.log(response.data); // Handle successful registration response
+        this.$emit("login"); // Switch back to login view
+      } catch (error) {
+        alert("Registration failed. Please try again.");
+        console.error(error);
+      }
     },
   },
 };

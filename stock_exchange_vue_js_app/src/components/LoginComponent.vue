@@ -11,6 +11,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
@@ -19,8 +21,23 @@ export default {
     };
   },
   methods: {
-    login() {
-      // Logic for login (e.g., axios request to backend)
+    async login() {
+      try {
+        const response = await axios.post("http://localhost:8080/api/users/login", {
+          username: this.username,
+          password: this.password,
+        });
+        alert(Welcome, $
+        {
+          response.data.name
+        }
+      )
+        ;
+        console.log(response.data); // Handle successful login response (e.g., save token or user details)
+      } catch (error) {
+        alert("Invalid username or password. Please try again.");
+        console.error(error);
+      }
     },
   },
 };
