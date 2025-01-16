@@ -1,44 +1,37 @@
 <template>
-  <div>
-    <h1>Register</h1>
-    <form @submit.prevent="register">
-      <input v-model="username" placeholder="Username/Email" />
-      <input v-model="fullName" placeholder="Full Name" />
-      <input v-model="balance" placeholder="Balance" type="number" />
-      <input v-model="password" placeholder="Password" type="password" />
-      <button type="submit">Register</button>
-    </form>
-    <button @click="$emit('login')">Back to Login</button>
+  <div id="app">
+    <LoginComponent v-if="showLogin" @register="toggleView" @logged-in="handleLogin" />
+    <RegisterComponent v-else-if="showRegister" @login="toggleView" />
+    <DashboardComponent v-else />
   </div>
 </template>
 
 <script>
-import axios from "axios";
+import LoginComponent from './components/LoginComponent.vue';
+import RegisterComponent from './components/RegisterComponent.vue';
+import DashboardComponent from './components/DashboardComponent.vue';
 
 export default {
+  components: {
+    LoginComponent,
+    RegisterComponent,
+    DashboardComponent,
+  },
   data() {
     return {
-      username: "",
-      fullName: "",
-      balance: 0,
-      password: "",
+      showLogin: true,
+      showRegister: false,
     };
   },
   methods: {
-    async register() {
-      try {
-        const response = await axios.post("http://localhost:8080/api/users", {
-          name: this.username,
-          balance: this.balance,
-          password: this.password,
-        });
-        alert("Registration successful! Please log in.");
-        console.log(response.data); // Handle successful registration response
-        this.$emit("login"); // Switch back to login view
-      } catch (error) {
-        alert("Registration failed. Please try again.");
-        console.error(error);
-      }
+    toggleView() {
+      this.showLogin = !this.showLogin;
+      this.showRegister = !this.showRegister;
+    },
+    handleLogin(user) {
+      console.log("Logged in as:", user);
+      this.showLogin = false;
+      this.showRegister = false;
     },
   },
 };
