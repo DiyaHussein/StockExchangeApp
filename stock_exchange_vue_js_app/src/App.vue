@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <LoginComponent v-if="showLogin" @register="toggleView" @logged-in="handleLogin" />
-    <RegisterComponent v-else-if="showRegister" @login="toggleView" />
+    <LoginComponent v-if="currentView === 'login'" @register="switchToRegister" @logged-in="switchToDashboard" />
+    <RegisterComponent v-else-if="currentView === 'register'" @login="switchToLogin" />
     <DashboardComponent v-else />
   </div>
 </template>
@@ -11,6 +11,7 @@ import LoginComponent from './components/LoginComponent.vue';
 import RegisterComponent from './components/RegisterComponent.vue';
 import DashboardComponent from './components/DashboardComponent.vue';
 
+
 export default {
   components: {
     LoginComponent,
@@ -19,19 +20,19 @@ export default {
   },
   data() {
     return {
-      showLogin: true,
-      showRegister: false,
+      currentView: 'login', // Tracks which view to display ('login', 'register', or 'dashboard')
     };
   },
   methods: {
-    toggleView() {
-      this.showLogin = !this.showLogin;
-      this.showRegister = !this.showRegister;
+    switchToLogin() {
+      this.currentView = 'login';
     },
-    handleLogin(user) {
-      console.log("Logged in as:", user);
-      this.showLogin = false;
-      this.showRegister = false;
+    switchToRegister() {
+      this.currentView = 'register';
+    },
+    switchToDashboard(user) {
+      console.log('Switching to dashboard...');
+      this.currentView = 'dashboard';
     },
   },
 };

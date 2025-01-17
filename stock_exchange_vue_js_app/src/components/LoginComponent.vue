@@ -27,13 +27,8 @@ export default {
           username: this.username,
           password: this.password,
         });
-        alert(Welcome, $
-        {
-          response.data.name
-        }
-      )
-        ;
-        console.log(response.data); // Handle successful login response (e.g., save token or user details)
+        alert(`Welcome, ${response.data.name}`);
+        this.$emit('logged-in', response.data); // Emit event to notify parent
       } catch (error) {
         alert("Invalid username or password. Please try again.");
         console.error(error);

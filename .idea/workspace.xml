@@ -4,9 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fd2e3585-492f-4ef3-a7df-d1784c9b876d" name="Changes" comment="Modified log in component, RegisterComponent.vue, app.vue we also implemented axios and we also added a feature which when the user register it will require his username, password and balance so how much money he wants to trade.">
-      <change afterPath="$PROJECT_DIR$/stock_exchange_vue_js_app/src/components/DashboardComponent.vue" afterDir="false" />
+    <list default="true" id="fd2e3585-492f-4ef3-a7df-d1784c9b876d" name="Changes" comment="dashboard added which implements endpoints and api to be used with the concurrent server however it doesn't work :(">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/stock_exchange_vue_js_app/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/stock_exchange_vue_js_app/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/stock_exchange_vue_js_app/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/stock_exchange_vue_js_app/src/App.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/stock_exchange_vue_js_app/src/components/DashboardComponent.vue" beforeDir="false" afterPath="$PROJECT_DIR$/stock_exchange_vue_js_app/src/components/DashboardComponent.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/stock_exchange_vue_js_app/src/components/LoginComponent.vue" beforeDir="false" afterPath="$PROJECT_DIR$/stock_exchange_vue_js_app/src/components/LoginComponent.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/stock_exchange_vue_js_app/vue.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/stock_exchange_vue_js_app/vue.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,6 +22,7 @@
       <list>
         <option value="Enum" />
         <option value="Class" />
+        <option value="Vue Composition API Component" />
       </list>
     </option>
   </component>
@@ -54,37 +59,37 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "JUnit.OrderMatcherConcurrencyTest.testMatchOrdersConcurrency.executor": "Run",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "Spring Boot.StockExchangeAppApplication.executor": "Run",
-    "git-widget-placeholder": "showcase__w13",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/work/UPT/CEBP/StockExchangeApp/StockExchangeApp",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "com.maddyhome.idea.vim.ui.VimEmulationConfigurable",
-    "ts.external.directory.path": "E:\\IntelliJ IDEA 2024.2.3\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;JUnit.OrderMatcherConcurrencyTest.testMatchOrdersConcurrency.executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;Spring Boot.StockExchangeAppApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;showcase__w13&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/work/UPT/CEBP/StockExchangeApp/StockExchangeApp&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.maddyhome.idea.vim.ui.VimEmulationConfigurable&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;E:\\IntelliJ IDEA 2024.2.3\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "vue.recent.templates": [
-      "Vue Composition API Component"
+  &quot;keyToStringList&quot;: {
+    &quot;vue.recent.templates&quot;: [
+      &quot;Vue Composition API Component&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\work\UPT\CEBP\StockExchangeApp" />
@@ -147,7 +152,8 @@
       <workItem from="1731790503167" duration="3954000" />
       <workItem from="1731857782712" duration="10034000" />
       <workItem from="1732450380080" duration="3905000" />
-      <workItem from="1737056781230" duration="1483000" />
+      <workItem from="1737056781230" duration="2878000" />
+      <workItem from="1737117571755" duration="3147000" />
     </task>
     <task id="LOCAL-00001" summary="added .json files to .gitignore">
       <option name="closed" value="true" />
@@ -197,7 +203,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736966177149</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="dashboard added which implements endpoints and api to be used with the concurrent server however it doesn't work :(">
+      <option name="closed" value="true" />
+      <created>1737064812972</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1737064812972</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -232,6 +246,7 @@
     <MESSAGE value="fix executeTrade function" />
     <MESSAGE value="add function to log user database into JSON file" />
     <MESSAGE value="Modified log in component, RegisterComponent.vue, app.vue we also implemented axios and we also added a feature which when the user register it will require his username, password and balance so how much money he wants to trade." />
-    <option name="LAST_COMMIT_MESSAGE" value="Modified log in component, RegisterComponent.vue, app.vue we also implemented axios and we also added a feature which when the user register it will require his username, password and balance so how much money he wants to trade." />
+    <MESSAGE value="dashboard added which implements endpoints and api to be used with the concurrent server however it doesn't work :(" />
+    <option name="LAST_COMMIT_MESSAGE" value="dashboard added which implements endpoints and api to be used with the concurrent server however it doesn't work :(" />
   </component>
 </project>
