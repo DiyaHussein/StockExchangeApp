@@ -4,14 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fd2e3585-492f-4ef3-a7df-d1784c9b876d" name="Changes" comment="dashboard added which implements endpoints and api to be used with the concurrent server however it doesn't work :(">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stock_exchange_vue_js_app/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/stock_exchange_vue_js_app/public/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stock_exchange_vue_js_app/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/stock_exchange_vue_js_app/src/App.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stock_exchange_vue_js_app/src/components/DashboardComponent.vue" beforeDir="false" afterPath="$PROJECT_DIR$/stock_exchange_vue_js_app/src/components/DashboardComponent.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stock_exchange_vue_js_app/src/components/LoginComponent.vue" beforeDir="false" afterPath="$PROJECT_DIR$/stock_exchange_vue_js_app/src/components/LoginComponent.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stock_exchange_vue_js_app/vue.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/stock_exchange_vue_js_app/vue.config.js" afterDir="false" />
-    </list>
+    <list default="true" id="fd2e3585-492f-4ef3-a7df-d1784c9b876d" name="Changes" comment="dashboard added which implements endpoints and api to be used with the concurrent server however it might work just pray" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -153,7 +146,7 @@
       <workItem from="1731857782712" duration="10034000" />
       <workItem from="1732450380080" duration="3905000" />
       <workItem from="1737056781230" duration="2878000" />
-      <workItem from="1737117571755" duration="3147000" />
+      <workItem from="1737117571755" duration="3503000" />
     </task>
     <task id="LOCAL-00001" summary="added .json files to .gitignore">
       <option name="closed" value="true" />
@@ -211,7 +204,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737064812972</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="dashboard added which implements endpoints and api to be used with the concurrent server however it might work just pray">
+      <option name="closed" value="true" />
+      <created>1737121218798</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1737121218798</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -247,6 +248,7 @@
     <MESSAGE value="add function to log user database into JSON file" />
     <MESSAGE value="Modified log in component, RegisterComponent.vue, app.vue we also implemented axios and we also added a feature which when the user register it will require his username, password and balance so how much money he wants to trade." />
     <MESSAGE value="dashboard added which implements endpoints and api to be used with the concurrent server however it doesn't work :(" />
-    <option name="LAST_COMMIT_MESSAGE" value="dashboard added which implements endpoints and api to be used with the concurrent server however it doesn't work :(" />
+    <MESSAGE value="dashboard added which implements endpoints and api to be used with the concurrent server however it might work just pray" />
+    <option name="LAST_COMMIT_MESSAGE" value="dashboard added which implements endpoints and api to be used with the concurrent server however it might work just pray" />
   </component>
 </project>
