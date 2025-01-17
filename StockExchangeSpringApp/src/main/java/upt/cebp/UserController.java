@@ -113,4 +113,62 @@ public class UserController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null));
     }
+
+    @GetMapping("/{id}/stocks")
+    public ResponseEntity<Map<String, Integer>> getUserStocks(@PathVariable Long id) {
+        Optional<User> userOptional = userDatabase.getUserById(id);
+        if (userOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        return ResponseEntity.ok(userOptional.get().getStocks());
+    }
+
+    @GetMapping("/{id}/stocks/{ticker}")
+    public ResponseEntity<Integer> getUserStock(@PathVariable Long id, @PathVariable String ticker) {
+        Optional<User> userOptional = userDatabase.getUserById(id);
+        if (userOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        Integer quantity = userOptional.get().getStockQuantity(ticker);
+        return ResponseEntity.ok(quantity != null ? quantity : 0);
+    }
+
+    /* Example API Call:
+    GET http://localhost:8080/api/users/1/stocks/AAPL
+     */
+
+    @PatchMapping("/{id}/stocks/{ticker}")
+    public ResponseEntity<User> addOrUpdateStock(@PathVariable Long id, @PathVariable String ticker, @RequestBody int quantity) {
+        Optional<User> userOptional = userDatabase.getUserById(id);
+        if (userOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        User user = userOptional.get();
+        user.addOrUpdateStock(ticker, quantity);
+        saveDatabase();
+        return ResponseEntity.ok(user);
+    }
+
+    /* Example API call:
+    PATCH http://localhost:8080/api/users/1/stocks/AAPL
+    Content-Type: application/json
+    Body: 15
+     */
+
+    @DeleteMapping("/{id}/stocks/{ticker}")
+    public ResponseEntity<User> removeStock(@PathVariable Long id, @PathVariable String ticker) {
+        Optional<User> userOptional = userDatabase.getUserById(id);
+        if (userOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        User user = userOptional.get();
+        user.removeStock(ticker);
+        saveDatabase();
+        return ResponseEntity.ok(user);
+    }
+    /* Example API call: DELETE http://localhost:8080/api/users/1/stocks/AAPL */
 }
