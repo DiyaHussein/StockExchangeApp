@@ -16,6 +16,9 @@ public class StockMarket {
     private static final Random random = new Random();
     private final UserDatabase userDatabase;
 
+    public StockMarket() {
+    }
+
     public StockMarket(UserDatabase userDatabase) {
         this.userDatabase = userDatabase;
     }

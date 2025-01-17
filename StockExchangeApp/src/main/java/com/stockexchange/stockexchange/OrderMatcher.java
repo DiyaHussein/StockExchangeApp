@@ -15,13 +15,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class OrderMatcher implements Runnable {
     private final StockMarket stockMarket;
+    private final UserDatabase userDatabase;
+
     private final ReentrantLock lock = new ReentrantLock();
     private volatile boolean running = true; // Control flag for thread termination
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final HttpClient httpClient = HttpClient.newHttpClient();
 
-    public OrderMatcher(StockMarket stockMarket) {
+    public OrderMatcher(UserDatabase userDatabase, StockMarket stockMarket) {
+        this.userDatabase = userDatabase;
         this.stockMarket = stockMarket;
+    }
+
+    public OrderMatcher(UserDatabase userDatabase) {
+        this(userDatabase, new StockMarket(userDatabase)); // Default stockMarket initialization
     }
 
     @Override
@@ -81,24 +88,18 @@ public class OrderMatcher implements Runnable {
     }
 
     private void executeTrade(Order buyOrder, Order sellOrder, int tradeQuantity) {
-        // Adjust quantities of orders after matching
-        buyOrder.reduceQuantity(tradeQuantity);
-        sellOrder.reduceQuantity(tradeQuantity);
+        double tradePrice = sellOrder.getPrice();
+        double totalTradeCost = tradeQuantity * tradePrice;
 
-        // Update user balances locally
-        double totalTradeCost = tradeQuantity * sellOrder.getPrice();
-        buyOrder.getUser().setBalance(buyOrder.getUser().getBalance() - totalTradeCost);
-        sellOrder.getUser().setBalance(sellOrder.getUser().getBalance() + totalTradeCost);
+        // Use userDatabase for API calls
+        String buyerId = buyOrder.getUser().getId().toString();
+        userDatabase.updateUserBalance(buyerId, buyOrder.getUser().getBalance() - totalTradeCost);
+        userDatabase.updateUserStock(buyerId, buyOrder.getStock(), tradeQuantity);
 
-        // Adjust stock holdings locally
-        buyOrder.getUser().addOrUpdateStock(buyOrder.getStock(), tradeQuantity);
-        sellOrder.getUser().addOrUpdateStock(sellOrder.getStock(), -tradeQuantity);
+        String sellerId = sellOrder.getUser().getId().toString();
+        userDatabase.updateUserBalance(sellerId, sellOrder.getUser().getBalance() + totalTradeCost);
+        userDatabase.updateUserStock(sellerId, sellOrder.getStock(), -tradeQuantity);
 
-        // Synchronize balances with the Spring app
-        syncUserBalanceWithSpringApp(buyOrder.getUser());
-        syncUserBalanceWithSpringApp(sellOrder.getUser());
-
-        // Log the trade details to the terminal
         System.out.printf(
                 "Trade Executed: Stock=%s, Quantity=%d, BuyPrice=%.2f, SellPrice=%.2f, Buyer=%s, Seller=%s%n",
                 buyOrder.getStock(),
@@ -109,51 +110,9 @@ public class OrderMatcher implements Runnable {
                 sellOrder.getUser().getName()
         );
 
-        // Record the trade in the system
         stockMarket.recordTrade(buyOrder, sellOrder, tradeQuantity);
     }
 
-//    private void syncUserBalanceWithSpringApp(User user) {
-//        try {
-//            String apiUrl = "http://localhost:8080/api/users/" + user.getId(); // Spring app's endpoint
-//            String updatedUserJson = objectMapper.writeValueAsString(user);
-//
-//            HttpRequest request = HttpRequest.newBuilder()
-//                    .uri(URI.create(apiUrl))
-//                    .header("Content-Type", "application/json")
-//                    .PUT(HttpRequest.BodyPublishers.ofString(updatedUserJson))
-//                    .build();
-//
-//            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-//
-//            if (response.statusCode() != 200) {
-//                System.err.printf("Failed to update user %s on Spring app. Status: %d%n", user.getName(), response.statusCode());
-//            }
-//        } catch (Exception e) {
-//            System.err.printf("Error updating user %s: %s%n", user.getName(), e.getMessage());
-//        }
-//    }
-
-    private void syncUserBalanceWithSpringApp(User user) {
-        try {
-            String apiUrl = "http://localhost:8080/api/users/" + user.getId() + "/balance"; // Use numeric ID
-            String balanceJson = objectMapper.writeValueAsString(user.getBalance()); // Send only balance
-
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(apiUrl))
-                    .header("Content-Type", "application/json")
-                    .method("PATCH", HttpRequest.BodyPublishers.ofString(balanceJson))
-                    .build();
-
-            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-            if (response.statusCode() != 200) {
-                System.err.printf("Failed to update balance for user ID %d. Status: %d%n", user.getId(), response.statusCode());
-            }
-        } catch (Exception e) {
-            System.err.printf("Error updating balance for user ID %d: %s%n", user.getId(), e.getMessage());
-        }
-    }
     // Method to stop the matcher thread if needed
     public void stop() {
         running = false;

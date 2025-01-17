@@ -35,6 +35,7 @@ public class UserDatabase {
         }
     }
 
+    // kept just in case, should not be used
     public void addUser(User user) {
         try {
             String userJson = objectMapper.writeValueAsString(user);
@@ -44,6 +45,7 @@ public class UserDatabase {
         }
     }
 
+    // kept just in case, should not be used
     public boolean removeUser(String userId) {
         try {
             restClient.delete(BASE_URL + "/" + userId);
@@ -52,5 +54,33 @@ public class UserDatabase {
             return false;
         }
     }
+
+    public void updateUserBalance(String userId, double newBalance) {
+        try {
+            String balanceUpdateUrl = BASE_URL + "/" + userId + "/balance";
+            restClient.patch(balanceUpdateUrl, String.valueOf(newBalance));
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException("Failed to update user balance", e);
+        }
+    }
+
+    public void updateUserStock(String userId, String stockTicker, int quantity) {
+        try {
+            String stockUpdateUrl = BASE_URL + "/" + userId + "/stocks/" + stockTicker;
+            restClient.patch(stockUpdateUrl, String.valueOf(quantity));
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException("Failed to update user stock", e);
+        }
+    }
+
+    public void removeUserStock(String userId, String stockTicker) {
+        try {
+            String stockDeleteUrl = BASE_URL + "/" + userId + "/stocks/" + stockTicker;
+            restClient.delete(stockDeleteUrl);
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException("Failed to remove user stock", e);
+        }
+    }
+
 }
 
