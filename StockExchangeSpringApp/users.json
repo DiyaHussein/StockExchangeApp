@@ -83,4 +83,52 @@
     "GOOGL" : 3
   },
   "password" : null
+}, {
+  "id" : 7,
+  "name" : "test",
+  "balance" : 5000.0,
+  "stocks" : null,
+  "password" : "test123"
+}, {
+  "id" : 8,
+  "name" : "test1",
+  "balance" : 5000.0,
+  "stocks" : null,
+  "password" : "test1"
+}, {
+  "id" : 9,
+  "name" : "test2",
+  "balance" : 5000.0,
+  "stocks" : null,
+  "password" : "test2"
+}, {
+  "id" : 10,
+  "name" : "test1",
+  "balance" : 5000.0,
+  "stocks" : null,
+  "password" : "test1"
+}, {
+  "id" : 11,
+  "name" : "test1",
+  "balance" : 1234.0,
+  "stocks" : null,
+  "password" : "123"
+}, {
+  "id" : 12,
+  "name" : "test2",
+  "balance" : 5000.0,
+  "stocks" : null,
+  "password" : "1000"
+}, {
+  "id" : 13,
+  "name" : "test1",
+  "balance" : 5000.0,
+  "stocks" : null,
+  "password" : "123"
+}, {
+  "id" : 14,
+  "name" : "test1",
+  "balance" : 5000.0,
+  "stocks" : null,
+  "password" : "123"
 } ]

@@ -1,8 +1,9 @@
 <template>
   <div id="app">
+    <router-view />
     <LoginComponent v-if="showLogin" @register="toggleView" @logged-in="handleLogin" />
     <RegisterComponent v-else-if="showRegister" @login="toggleView" />
-    <DashboardComponent v-else />
+    <DashboardComponent v-else :user="currentUser" />
   </div>
 </template>
 
@@ -21,6 +22,7 @@ export default {
     return {
       showLogin: true,
       showRegister: false,
+      currentUser: null, // Store logged-in user data
     };
   },
   methods: {
@@ -30,6 +32,7 @@ export default {
     },
     handleLogin(user) {
       console.log("Logged in as:", user);
+      this.currentUser = user; // Save user data
       this.showLogin = false;
       this.showRegister = false;
     },

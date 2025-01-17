@@ -10,50 +10,49 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import org.json.JSONObject;
 
 public class StockMarket {
-    private ConcurrentLinkedQueue<Order> buyOrders = new ConcurrentLinkedQueue<>();
-    private ConcurrentLinkedQueue<Order> sellOrders = new ConcurrentLinkedQueue<>();
+    private final ConcurrentLinkedQueue<Order> buyOrders = new ConcurrentLinkedQueue<>();
+    private final ConcurrentLinkedQueue<Order> sellOrders = new ConcurrentLinkedQueue<>();
+    private final List<Stock> availableStocks;
     private static final String[] STOCK_TICKERS = {"AAPL", "MSFT", "AMZN", "GOOGL", "TSLA", "FB", "NFLX"};
     private static final Random random = new Random();
     private final UserDatabase userDatabase;
 
-    public StockMarket() {
-    }
-
     public StockMarket(UserDatabase userDatabase) {
         this.userDatabase = userDatabase;
+        this.availableStocks = new ArrayList<>();
+        initializeStocks();
+        startPriceUpdater();
     }
 
-    // Method to add a new order to the stock market
+    private void initializeStocks() {
+        for (String ticker : STOCK_TICKERS) {
+            double price = 50 + random.nextDouble() * 100; // Random price between $50 and $150
+            availableStocks.add(new Stock(ticker, price));
+        }
+        System.out.println("Initialized stocks: " + availableStocks);
+    }
+
+    public List<Stock> getAllStocks() {
+        System.out.println("Fetching all stocks: " + availableStocks);
+        return availableStocks;
+    }
+
     public void addOrder(Order order) {
         if (order.getIntention() == StockAction.BUY) {
             buyOrders.add(order);
         } else {
             sellOrders.add(order);
         }
-        System.out.println("Order added: " + order.getIntention() + " " + order.getQuantity() +
-                " shares of " + order.getStock() + " @"
-                + String.format("%.2f", order.getPrice()) + "USD by " + order.getUser().getName());
+        System.out.println("Order added: " + order);
     }
 
-    // Method to remove an order from the stock market (e.g., if fulfilled or canceled)
-    public boolean removeOrder(Order order) {
-        boolean removed;
-        if (order.getIntention() == StockAction.BUY) {
-            removed = buyOrders.remove(order);
-        } else {
-            removed = sellOrders.remove(order);
-        }
-
-        if (removed) {
-            System.out.println("Order removed: " + order.getIntention() + " " + order.getQuantity() +
-                    " shares of " + order.getStock() + " by " + order.getUser().getName());
-        } else {
-            System.out.println("Order not found.");
-        }
-        return removed;
+    public List<Order> getAllOrders() {
+        List<Order> allOrders = new ArrayList<>(buyOrders);
+        allOrders.addAll(sellOrders);
+        System.out.println("Active orders: " + allOrders);
+        return allOrders;
     }
 
-    // Get all orders for a specific stock
     public List<Order> getOrdersByStock(String stock) {
         List<Order> result = new ArrayList<>();
 
@@ -72,7 +71,6 @@ public class StockMarket {
         return result;
     }
 
-    // Get all orders of a specific type (BUY or SELL)
     public List<Order> getOrdersByIntention(StockAction intention) {
         List<Order> result = new ArrayList<>();
 
@@ -85,41 +83,6 @@ public class StockMarket {
         return result;
     }
 
-    // Get all active orders
-    public List<Order> getAllOrders() {
-        List<Order> allOrders = new ArrayList<>(buyOrders);
-        allOrders.addAll(sellOrders);
-        return allOrders;
-    }
-
-    // Display all active orders (for monitoring)
-    public void displayAllOrders() {
-        if (buyOrders.isEmpty() && sellOrders.isEmpty()) {
-            System.out.println("No active orders.");
-        } else {
-            System.out.println("Active buy orders:");
-            for (Order order : buyOrders) {
-                System.out.println("BUY " + order.getQuantity() + " shares of " +
-                        order.getStock() + " by " + order.getUser().getName());
-            }
-
-            System.out.println("Active sell orders:");
-            for (Order order : sellOrders) {
-                System.out.println("SELL " + order.getQuantity() + " shares of " +
-                        order.getStock() + " by " + order.getUser().getName());
-            }
-        }
-    }
-
-    public ConcurrentLinkedQueue<Order> getBuyOrders() {
-        return buyOrders;
-    }
-
-    public ConcurrentLinkedQueue<Order> getSellOrders() {
-        return sellOrders;
-    }
-
-    // Method to populate the orders list with random orders
     public void populateRandomOrders(int n) {
         List<User> users = userDatabase.getAllUsers();
         if (users.isEmpty()) {
@@ -149,9 +112,55 @@ public class StockMarket {
         }
     }
 
-    // Method to record a trade in JSON format
+    private void updateStockPrices() {
+        for (Stock stock : availableStocks) {
+            double change = (random.nextDouble() - 0.5) * 5; // Random change between -2.5 and +2.5
+            stock.setPrice(Math.max(0, stock.getPrice() + change)); // Ensure price doesn't go negative
+        }
+        System.out.println("Updated stock prices: " + availableStocks);
+    }
+
+    private void startPriceUpdater() {
+        new Thread(() -> {
+            while (true) {
+                updateStockPrices();
+                try {
+                    Thread.sleep(5000); // Update every 5 seconds
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
+                }
+            }
+        }).start();
+    }
+
+    public ConcurrentLinkedQueue<Order> getBuyOrders() {
+        return buyOrders;
+    }
+
+    public ConcurrentLinkedQueue<Order> getSellOrders() {
+        return sellOrders;
+    }
+
+    public void displayAllOrders() {
+        if (buyOrders.isEmpty() && sellOrders.isEmpty()) {
+            System.out.println("No active orders.");
+        } else {
+            System.out.println("Active buy orders:");
+            for (Order order : buyOrders) {
+                System.out.println("BUY " + order.getQuantity() + " shares of " +
+                        order.getStock() + " by " + order.getUser().getName());
+            }
+
+            System.out.println("Active sell orders:");
+            for (Order order : sellOrders) {
+                System.out.println("SELL " + order.getQuantity() + " shares of " +
+                        order.getStock() + " by " + order.getUser().getName());
+            }
+        }
+    }
+
     public void recordTrade(Order buyOrder, Order sellOrder, int tradeQuantity) {
-        // Define the trade details
         double tradePrice = (buyOrder.getPrice() + sellOrder.getPrice()) / 2; // Average price
         double totalValue = tradeQuantity * tradePrice;
 
@@ -161,12 +170,11 @@ public class StockMarket {
         tradeRecord.put("quantity", tradeQuantity);
         tradeRecord.put("price", tradePrice);
         tradeRecord.put("totalValue", totalValue);
-        tradeRecord.put("buyerId", buyOrder.getUser().getId()); // TODO: For now, the name substitutes for an ID, add actual ID in the future
+        tradeRecord.put("buyerId", buyOrder.getUser().getId());
         tradeRecord.put("sellerId", sellOrder.getUser().getId());
         tradeRecord.put("buyOrderId", buyOrder.getId());
         tradeRecord.put("sellOrderId", sellOrder.getId());
 
-        // Write trade record to a JSON log file
         try (FileWriter file = new FileWriter("trade_log.json", true)) {
             file.write(tradeRecord.toString() + "\n");
         } catch (IOException e) {

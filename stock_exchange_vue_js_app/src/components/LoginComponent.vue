@@ -27,8 +27,15 @@ export default {
           username: this.username,
           password: this.password,
         });
+
         alert(`Welcome, ${response.data.name}`);
-        console.log(response.data); // Handle successful login response (e.g., save token or user details)
+        console.log(response.data); // Log user details for debugging
+
+        // Save user data (if needed, e.g., token or user info)
+        localStorage.setItem("user", JSON.stringify(response.data));
+
+        // Redirect to dashboard
+        this.$router.push("/Dashboard");
       } catch (error) {
         alert("Invalid username or password. Please try again.");
         console.error(error);
