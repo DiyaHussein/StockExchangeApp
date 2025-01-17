@@ -14,7 +14,7 @@ public class StockMarket {
     private ConcurrentLinkedQueue<Order> sellOrders = new ConcurrentLinkedQueue<>();
     private static final String[] STOCK_TICKERS = {"AAPL", "MSFT", "AMZN", "GOOGL", "TSLA", "FB", "NFLX"};
     private static final Random random = new Random();
-    private final UserDatabase userDatabase;
+    private UserDatabase userDatabase;
 
     public StockMarket() {
     }

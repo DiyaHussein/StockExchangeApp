@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class OrderMatcher implements Runnable {
     private final StockMarket stockMarket;
-    private final UserDatabase userDatabase;
+    private UserDatabase userDatabase;
 
     private final ReentrantLock lock = new ReentrantLock();
     private volatile boolean running = true; // Control flag for thread termination

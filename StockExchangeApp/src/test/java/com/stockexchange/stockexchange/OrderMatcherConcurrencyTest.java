@@ -17,7 +17,7 @@ public class OrderMatcherConcurrencyTest {
         // Set up the stock market and order matcher
         UserDatabase userDatabase = new UserDatabase();
         StockMarket stockMarket = new StockMarket(userDatabase);
-        OrderMatcher orderMatcher = new OrderMatcher(stockMarket);
+        OrderMatcher orderMatcher = new OrderMatcher(userDatabase, stockMarket);
 
         // Populate the user database
         //userDatabase.populateRandomUsers(10);
@@ -28,7 +28,7 @@ public class OrderMatcherConcurrencyTest {
         matcherThread.start();
 
         // Use an ExecutorService to simulate concurrent order submissions
-        ExecutorService executor = Executors.newFixedThreadPool(10);
+        ExecutorService executor = Executors.newFixedThreadPool(10); // TODO: add Try statement
 
         // Submit buy and sell orders concurrently
         for (int i = 0; i < 100; i++) {
