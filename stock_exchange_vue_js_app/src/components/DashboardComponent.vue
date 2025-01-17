@@ -20,8 +20,11 @@
         </select>
         <input type="number" v-model="orderQuantity" placeholder="Quantity" />
         <input type="number" v-model="orderPrice" placeholder="Price" />
-        <button @click="placeBuyOrder">Buy</button>
-        <button @click="placeSellOrder">Sell</button>
+        <select v-model="orderAction">
+          <option value="BUY">Buy</option>
+          <option value="SELL">Sell</option>
+        </select>
+        <button @click="placeTradeOrder">Submit Order</button>
       </div>
     </div>
 
@@ -32,7 +35,7 @@
         <ul>
           <li v-for="order in buyOrders" :key="order.id">
             BUY {{ order.quantity }} shares of {{ order.stock }} at the price of {{ order.price }}USD by {{ order.user }}
-            <button @click="executeSellOrder(order)">Sell</button>
+            <button @click="executeTrade(order, 'SELL')">Sell</button>
           </li>
         </ul>
       </div>
@@ -42,7 +45,7 @@
         <ul>
           <li v-for="order in sellOrders" :key="order.id">
             SELL {{ order.quantity }} shares of {{ order.stock }} at the price of {{ order.price }}USD by {{ order.user }}
-            <button @click="executeBuyOrder(order)">Buy</button>
+            <button @click="executeTrade(order, 'BUY')">Buy</button>
           </li>
         </ul>
       </div>
@@ -56,88 +59,84 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      userStocks: {}, // Retrieved from API
+      userStocks: {}, // User's stocks
       stockOptions: ["AAPL", "MSFT", "AMZN", "GOOGL", "TSLA", "FB", "NFLX"],
       selectedStock: "AAPL",
       orderQuantity: 0,
       orderPrice: 0,
-      buyOrders: [], // Retrieved from API
-      sellOrders: [], // Retrieved from API
+      orderAction: "BUY", // BUY or SELL
+      buyOrders: [], // Live buy orders
+      sellOrders: [], // Live sell orders
     };
   },
   methods: {
     fetchUserStocks() {
-      const userId = localStorage.getItem('userId'); // Retrieve user ID from localStorage
+      const userId = localStorage.getItem('userId');
       if (!userId) {
         console.error('User ID not found');
         return;
       }
 
-      axios.get(`http://localhost:8080/api/users/${userId}/stocks`)
-          .then(response => {
+      axios
+          .get(`http://localhost:8080/api/users/${userId}/stocks`)
+          .then((response) => {
             this.userStocks = response.data;
           })
-          .catch(err => {
+          .catch((err) => {
             console.error('Failed to fetch user stocks:', err);
           });
     },
     fetchOrders() {
-      // Call API to fetch buy and sell orders
-      axios.get('http://localhost:8080/api/orders')
-          .then(response => {
-            this.buyOrders = response.data.buyOrders;
-            this.sellOrders = response.data.sellOrders;
+      axios
+          .get('http://localhost:9090/orders/live')
+          .then((response) => {
+            this.buyOrders = response.data.filter((order) => order.action === 'BUY');
+            this.sellOrders = response.data.filter((order) => order.action === 'SELL');
           })
-          .catch(err => {
-            console.error('Failed to fetch orders:', err);
+          .catch((err) => {
+            console.error('Failed to fetch live orders:', err);
           });
     },
-    placeBuyOrder() {
-      // Validate user has enough balance, then send API call
-      axios.post('/http://localhost:8080/api/orders/buy', {
+    placeTradeOrder() {
+      const userId = localStorage.getItem('userId');
+      if (!userId) {
+        console.error('User ID not found');
+        return;
+      }
+
+      const order = {
+        userId,
         stock: this.selectedStock,
         quantity: this.orderQuantity,
         price: this.orderPrice,
-      })
+        action: this.orderAction,
+      };
+
+      axios
+          .post('http://localhost:9090/addTrade', order)
           .then(() => {
-            this.fetchOrders(); // Refresh orders
+            this.fetchOrders(); // Refresh live orders
+            this.fetchUserStocks(); // Refresh user stocks
           })
-          .catch(err => {
-            console.error('Failed to place buy order:', err);
+          .catch((err) => {
+            console.error('Failed to place trade order:', err);
           });
     },
-    placeSellOrder() {
-      // Validate user has enough stock, then send API call
-      axios.post('http://localhost:8080/api/orders/sell', {
-        stock: this.selectedStock,
-        quantity: this.orderQuantity,
-        price: this.orderPrice,
-      })
-          .then(() => {
-            this.fetchOrders(); // Refresh orders
+    executeTrade(order, action) {
+      axios
+          .post(`http://localhost:9090/addTrade`, {
+            userId: localStorage.getItem('userId'),
+            stock: order.stock,
+            quantity: order.quantity,
+            price: order.price,
+            action,
           })
-          .catch(err => {
-            console.error('Failed to place sell order:', err);
-          });
-    },
-    executeBuyOrder(order) {
-      // Call API to execute buy order
-      axios.post(`http://localhost:8080/api/orders/executeBuy/${order.id}`)
           .then(() => {
-            this.fetchOrders(); // Refresh orders
+            this.fetchOrders(); // Refresh live orders
+            this.fetchUserStocks(); // Refresh user stocks
           })
-          .catch(err => {
-            console.error('Failed to execute buy order:', err);
-          });
-    },
-    executeSellOrder(order) {
-      // Call API to execute sell order
-      axios.post(`http://localhost:8080/api/orders/executeSell/${order.id}`)
-          .then(() => {
-            this.fetchOrders(); // Refresh orders
-          })
-          .catch(err => {
-            console.error('Failed to execute sell order:', err);
+          .catch((err) => {
+            console.error('Failed to execute trade:', err);
           });
     },
   },
@@ -165,7 +164,8 @@ export default {
   justify-content: space-between;
 }
 
-.buy-orders, .sell-orders {
+.buy-orders,
+.sell-orders {
   width: 48%;
 }
 </style>

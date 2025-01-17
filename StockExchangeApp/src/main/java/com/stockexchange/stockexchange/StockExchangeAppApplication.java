@@ -1,6 +1,8 @@
 package com.stockexchange.stockexchange;
 
 import static spark.Spark.*;
+import spark.Filter;
+import spark.Spark;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -18,7 +20,20 @@ public class StockExchangeAppApplication {
 
     private static final String LOG_DIRECTORY = "logs";
 
+    private static void enableCORS(final String origin, final String methods, final String headers) {
+        Filter filter = (request, response) -> {
+            response.header("Access-Control-Allow-Origin", origin);
+            response.header("Access-Control-Allow-Methods", methods);
+            response.header("Access-Control-Allow-Headers", headers);
+            response.header("Access-Control-Allow-Credentials", "true");
+        };
+        Spark.after(filter);
+    }
+
     public static void main(String[] args) {
+
+        enableCORS("*", "*", "*");
+
         // Clear the trade_log.json file when the application starts
         try (FileWriter fileWriter = new FileWriter("trade_log.json", false)) {
             fileWriter.write(""); // Clears the file content

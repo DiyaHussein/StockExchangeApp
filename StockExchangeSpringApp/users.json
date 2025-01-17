@@ -11,7 +11,7 @@
 }, {
   "id" : 4,
   "name" : "UsernameFromVue",
-  "balance" : -154.92256999514626,
+  "balance" : -1973.029294584466,
   "stocks" : null,
   "password" : "1234"
 }, {
@@ -48,6 +48,29 @@
   "id" : 10,
   "name" : "TenTen",
   "balance" : 9910.0,
+  "stocks" : { },
+  "password" : "test"
+}, {
+  "id" : 11,
+  "name" : "ButtonFixer",
+  "balance" : 88888.0,
+  "stocks" : { },
+  "password" : "test"
+}, {
+  "id" : 12,
+  "name" : "Investor",
+  "balance" : 1123334.0,
+  "stocks" : {
+    "AAPL" : 5,
+    "GOOGL" : 3,
+    "MSFT" : 100,
+    "AMZN" : 15
+  },
+  "password" : "money"
+}, {
+  "id" : 13,
+  "name" : "The Newest user",
+  "balance" : 1234.0,
   "stocks" : { },
   "password" : "test"
 } ]

@@ -5,6 +5,10 @@ import DashboardComponent from './components/DashboardComponent.vue';
 
 const routes = [
     {
+        path: '/',
+        redirect: '/login', // Redirect root to the login page
+    },
+    {
         path: '/login',
         name: 'Login',
         component: LoginComponent,

@@ -6,7 +6,7 @@
       <input v-model="password" placeholder="Password" type="password" />
       <button type="submit">Login</button>
     </form>
-    <button @click="$emit('register')">Set up an account</button>
+    <button @click="navigateToRegister">Set up account</button>
   </div>
 </template>
 
@@ -39,6 +39,9 @@ export default {
               this.errorMessage = 'An error occurred. Please try again.';
             }
           });
+    },
+    navigateToRegister() {
+      this.$router.push("/register");
     },
   }
 };

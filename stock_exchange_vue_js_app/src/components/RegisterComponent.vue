@@ -8,7 +8,7 @@
       <input v-model="password" placeholder="Password" type="password" />
       <button type="submit">Register</button>
     </form>
-    <button @click="$emit('login')">Back to Login</button>
+    <button @click="navigateToLogin">Back to Login</button>
   </div>
 </template>
 
@@ -33,14 +33,21 @@ export default {
         stocks: {}, // Initialize stocks as an empty list
       };
 
-      axios.post('http://localhost:8080/api/users', newUser)
+      axios
+          .post("http://localhost:8080/api/users", newUser)
           .then(() => {
-            this.$router.push('/login'); // Redirect after successful registration
+            this.$router.push("/login"); // Redirect after successful registration
           })
-          .catch(err => {
-            console.error('Error creating user:', err.response?.data || err.message);
-            this.errorMessage = 'Failed to create user. Please try again.';
+          .catch((err) => {
+            console.error(
+                "Error creating user:",
+                err.response?.data || err.message
+            );
+            this.errorMessage = "Failed to create user. Please try again.";
           });
+    },
+    navigateToLogin() {
+      this.$router.push("/login"); // Navigate to the login route
     },
   },
 };
