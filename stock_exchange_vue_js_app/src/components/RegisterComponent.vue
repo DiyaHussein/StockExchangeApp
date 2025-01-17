@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Register</h1>
-    <form @submit.prevent="register">
+    <form @submit.prevent="registerUser">
       <input v-model="username" placeholder="Username/Email" />
       <input v-model="fullName" placeholder="Full Name" />
       <input v-model="balance" placeholder="Balance" type="number" />
@@ -25,20 +25,22 @@ export default {
     };
   },
   methods: {
-    async register() {
-      try {
-        const response = await axios.post("http://localhost:8080/api/users", {
-          name: this.username,
-          balance: this.balance,
-          password: this.password,
-        });
-        alert("Registration successful! Please log in.");
-        console.log(response.data); // Handle successful registration response
-        this.$emit("login"); // Switch back to login view
-      } catch (error) {
-        alert("Registration failed. Please try again.");
-        console.error(error);
-      }
+    registerUser() {
+      const newUser = {
+        name: this.username,
+        password: this.password,
+        balance: this.balance || 0, // Initialize balance to 0
+        stocks: {}, // Initialize stocks as an empty list
+      };
+
+      axios.post('http://localhost:8080/api/users', newUser)
+          .then(() => {
+            this.$router.push('/login'); // Redirect after successful registration
+          })
+          .catch(err => {
+            console.error('Error creating user:', err.response?.data || err.message);
+            this.errorMessage = 'Failed to create user. Please try again.';
+          });
     },
   },
 };

@@ -36,10 +36,26 @@ public class UserController {
     }
 
     @PostMapping
-    public User createUser(@RequestBody User user) {
+    public ResponseEntity<?> createUser(@RequestBody User user) {
+        // Validate required fields
+        if (user.getName() == null || user.getName().isEmpty()) {
+            return ResponseEntity.badRequest().body("User name is required");
+        }
+        if (user.getPassword() == null || user.getPassword().isEmpty()) {
+            return ResponseEntity.badRequest().body("Password is required");
+        }
+
+        // Set default values for optional fields
+        if (user.getBalance() == 0) {
+            user.setBalance(0);
+        }
+        if (user.getStocks() == null) {
+            user.setStocks(new HashMap<>());
+        }
+
         User createdUser = userDatabase.addUser(user);
         saveDatabase();
-        return createdUser;
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
     @PutMapping("/{id}")
@@ -110,7 +126,7 @@ public class UserController {
         return userDatabase.getAllUsers().stream()
                 .filter(user -> user.getName().equals(username) && user.getPassword().equals(password))
                 .findFirst()
-                .map(ResponseEntity::ok)
+                .map(ResponseEntity::ok) // Returns the full User object, including the ID
                 .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null));
     }
 

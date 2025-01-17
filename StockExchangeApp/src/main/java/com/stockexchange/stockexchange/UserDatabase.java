@@ -66,7 +66,7 @@ public class UserDatabase {
 
     public void updateUserStock(String userId, String stockTicker, int quantity) {
         try {
-            String stockUpdateUrl = BASE_URL + "/" + userId + "/stocks/" + stockTicker;
+            String stockUpdateUrl = BASE_URL + "/" + userId + "/stocks/" + stockTicker; System.out.println("updateUserStock stockupdateurl is " + stockUpdateUrl); // TODO: remove after debug
             restClient.patch(stockUpdateUrl, String.valueOf(quantity));
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException("Failed to update user stock", e);

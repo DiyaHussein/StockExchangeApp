@@ -16,18 +16,29 @@ public class UserDatabase {
 
     private static final AtomicLong idCounter = new AtomicLong(1); // Import java.util.concurrent.atomic.AtomicLong
 
-    public User addUser(User user) {
+    public synchronized User addUser(User user) {
+        // Ensure the ID is unique
         if (user.getId() == null) {
-            user.setId(idCounter.getAndIncrement());
+            long maxId = users.stream()
+                    .mapToLong(User::getId)
+                    .max()
+                    .orElse(0); // Default to 0 if the list is empty
+            user.setId(Math.max(maxId + 1, idCounter.getAndIncrement()));
+        } else if (users.stream().anyMatch(existingUser -> existingUser.getId().equals(user.getId()))) {
+            throw new IllegalArgumentException("User ID already exists: " + user.getId());
         }
+
         users.add(user);
+
         try {
             saveToJson(); // Save changes to JSON
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed to save users to JSON", e);
         }
+
         return user;
     }
+
 
     public Optional<User> getUserById(Long id) {
         return users.stream().filter(user -> Objects.equals(user.getId(), id)).findFirst();

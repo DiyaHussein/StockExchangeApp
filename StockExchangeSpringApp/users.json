@@ -1,1 +1,53 @@
- [ ]
+[ {
+  "id" : 3,
+  "name" : "Firstman",
+  "balance" : 11111.0,
+  "stocks" : {
+    "FB" : 30,
+    "GOOGL" : 11,
+    "MSFT" : 60
+  },
+  "password" : "testPassword"
+}, {
+  "id" : 4,
+  "name" : "UsernameFromVue",
+  "balance" : -154.92256999514626,
+  "stocks" : null,
+  "password" : "1234"
+}, {
+  "id" : 5,
+  "name" : "Broke Dude",
+  "balance" : 1.0,
+  "stocks" : { },
+  "password" : "testPassword"
+}, {
+  "id" : 6,
+  "name" : "aaaaaaa",
+  "balance" : 5555.0,
+  "stocks" : { },
+  "password" : "test"
+}, {
+  "id" : 7,
+  "name" : "UsernameFromVue",
+  "balance" : 12888.0,
+  "stocks" : { },
+  "password" : "test"
+}, {
+  "id" : 8,
+  "name" : "UsernameFromVue",
+  "balance" : 12888.0,
+  "stocks" : { },
+  "password" : "test"
+}, {
+  "id" : 9,
+  "name" : "NineNine",
+  "balance" : 99.0,
+  "stocks" : { },
+  "password" : "test9"
+}, {
+  "id" : 10,
+  "name" : "TenTen",
+  "balance" : 9910.0,
+  "stocks" : { },
+  "password" : "test"
+} ]

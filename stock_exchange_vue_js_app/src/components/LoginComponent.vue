@@ -21,19 +21,25 @@ export default {
     };
   },
   methods: {
-    async login() {
-      try {
-        const response = await axios.post("http://localhost:8080/api/users/login", {
-          username: this.username,
-          password: this.password,
-        });
-        alert(`Welcome, ${response.data.name}`);
-        console.log(response.data); // Handle successful login response (e.g., save token or user details)
-      } catch (error) {
-        alert("Invalid username or password. Please try again.");
-        console.error(error);
-      }
+    login() {
+      axios.post('http://localhost:8080/api/users/login', {
+        username: this.username,
+        password: this.password,
+      })
+          .then(response => {
+            const user = response.data;
+            localStorage.setItem('userId', user.id); // Save user ID
+            this.$router.push('/dashboard'); // Redirect to the dashboard
+          })
+          .catch(err => {
+            if (err.response && err.response.status === 401) {
+              this.errorMessage = 'Invalid username or password';
+            } else {
+              console.error('Login failed:', err);
+              this.errorMessage = 'An error occurred. Please try again.';
+            }
+          });
     },
-  },
+  }
 };
 </script>
