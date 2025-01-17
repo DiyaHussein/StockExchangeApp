@@ -17,12 +17,27 @@ public class User {
         this.name = name;
         this.balance = balance;
         this.stocks = new HashMap<>();
+        this.password = "";
     }
 
     public User(String name, double balance, Map<String, Integer> stocks) {
         this.name = name;
         this.balance = balance;
         this.stocks = stocks;
+        this.password = "";
+    }
+
+    public User(String name, double balance, Map<String, Integer> stocks, String password) {
+        this.name = name;
+        this.balance = balance;
+        this.stocks = stocks;
+        this.password = password;
+    }
+
+    public User(String name, double balance, String password) {
+        this.name = name;
+        this.balance = balance;
+        this.password = password;
     }
 
     public Long getId() {
